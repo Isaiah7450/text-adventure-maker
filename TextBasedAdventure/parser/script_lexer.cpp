@@ -9,7 +9,11 @@
 namespace hoffman::isaiah {
 	namespace parser {
 		std::map<std::string, ScriptCommands> commandTable {
-			{"Unknown", ScriptCommands::Unknown}, {"Begin_Script", ScriptCommands::Begin_Script},
+			// These first two are dummy commands that will not actually be recognized.
+			// They exist in case I end up needing to map the symbolic names back
+			// into the textual values.
+			{"_Unknown", ScriptCommands::Unknown}, {"_Number", ScriptCommands::Number},
+			{"Begin_Script", ScriptCommands::Begin_Script},
 			{"End_Script", ScriptCommands::End_Script}, {"State", ScriptCommands::State},
 			{"Comment", ScriptCommands::Comment}, {"End_Comment", ScriptCommands::End_Comment},
 			{"Rem", ScriptCommands::Comment}, {"End_Rem", ScriptCommands::End_Comment},
@@ -54,62 +58,65 @@ namespace hoffman::isaiah {
 			this->skipWhite();
 		}
 
-		void ScriptLexer::getNext() {
+		bool ScriptLexer::getNext() {
 			// Make sure we do not go past the end of the file.
-			if (*(this->lookahead) != '\0') {
+			if (this->getLookahead() != '\0') {
 				// Keep track of start location
 				const char* startChar = this->lookahead;
 				// Determine token type
-				if ((*this->lookahead >= '0' && *this->lookahead <= '9') || *this->lookahead == '-') {
+				if ((this->getLookahead() >= '0' && this->getLookahead() <= '9') || this->getLookahead() == '-') {
 					this->ttoken = ScriptTokenTypes::Number;
+					this->ctoken = ScriptCommands::Number;
 				}
 				else {
 					this->ttoken = ScriptTokenTypes::Unknown;
+					this->ctoken = ScriptCommands::Unknown;
 				}
 				if (this->ttoken == ScriptTokenTypes::Number) {
 					// Scan a number (and handle leading minus sign)
-					if (*this->lookahead == '-') {
-						this->token += *lookahead;
-						++lookahead;
+					if (this->getLookahead() == '-') {
+						this->token += this->getLookahead();
+						++this->lookahead;
 					}
-					while (*this->lookahead >= '0' && *this->lookahead <= '9') {
-						this->token += *lookahead;
-						++lookahead;
+					while (this->getLookahead() >= '0' && this->getLookahead() <= '9') {
+						this->token += this->getLookahead();
+						++this->lookahead;
 					}
 					// Validate
-					if (*this->lookahead != ' ' && *this->lookahead != '\t'
-						&& *this->lookahead != '\r' && *this->lookahead != '\n'
-						&& *this->lookahead != '\0') {
+					if (this->getLookahead() != ' ' && this->getLookahead() != '\t'
+						&& this->getLookahead() != '\r' && this->getLookahead() != '\n'
+						&& this->getLookahead() != '\0') {
 						throw ScriptLexicalError {"Invalid numerical literal.", this->getFileName(), this->getLineNumber()};
 					}
 				}
 				else {
 					// Scan a non-number
-					while ((*this->lookahead >= 'a' && *this->lookahead <= 'z') ||
-						(*this->lookahead >= 'A' && *this->lookahead <= 'Z') || *this->lookahead == '_') {
+					while ((this->getLookahead() >= 'a' && this->getLookahead() <= 'z') ||
+						(this->getLookahead() >= 'A' && this->getLookahead() <= 'Z') || this->getLookahead() == '_') {
 						this->token += *lookahead;
 						++lookahead;
 					}
 					// Validate
-					if (*this->lookahead != ' ' && *this->lookahead != '\t'
-						&& *this->lookahead != '\r' && *this->lookahead != '\n'
-						&& *this->lookahead != '\0') {
-						throw ScriptLexicalError {"Invalid token.", this->getFileName(), this->getLineNumber()};
+					if (this->getLookahead() != ' ' && this->getLookahead() != '\t'
+						&& this->getLookahead() != '\r' && this->getLookahead() != '\n'
+						&& this->getLookahead() != '\0') {
+						throw ScriptLexicalError {"Invalid command token.", this->getFileName(), this->getLineNumber()};
 					}
 				}
 				// Update location
 				this->my_location = this->lookahead - startChar;
 				this->skipWhite();
 			}
+			if (this->getLookahead() == '\0') {
+				return true;
+			}
+			return false;
 		}
 
 		void ScriptLexer::scan() noexcept {
 			if (this->ttoken == ScriptTokenTypes::Unknown) {
 				auto loc = parser::commandTable.find(this->token);
-				if (loc == parser::commandTable.end()) {
-					this->ctoken = ScriptCommands::Unknown;
-				}
-				else {
+				if (loc != parser::commandTable.end()) {
 					this->ctoken = loc->second;
 				}
 			}
@@ -118,17 +125,17 @@ namespace hoffman::isaiah {
 		void ScriptLexer::skipWhite() noexcept {
 			// This is safe because the text of the script is guaranteed
 			// to be terminated by a null character ('\0').
-			while (*this->lookahead == '\t' || *this->lookahead == '\n'
-				|| *this->lookahead == '\r' || *this->lookahead == ' ') {
-				const char* oldLook = this->lookahead;
+			while (this->getLookahead() == '\t' || this->getLookahead() == '\n'
+				|| this->getLookahead() == '\r' || this->getLookahead() == ' ') {
+				char oldLook = this->getLookahead();
 				++this->lookahead;
 				++this->my_location;
 				// Increment line numbers as appropriate
 				// (Lines can end in \r, \n, or \r\n depending on the OS.
 				// This is probably handled for me already if I use text mode,
 				// but if I open a stream in binary mode, this matters.)
-				if ((*oldLook == '\r' || *oldLook == '\n') &&
-					!(*oldLook == '\r' && *this->lookahead == '\n')) {
+				if ((oldLook == '\r' || oldLook == '\n')
+					&& !(oldLook == '\r' && this->getLookahead() == '\n')) {
 					++this->line_number;
 				}
 			}

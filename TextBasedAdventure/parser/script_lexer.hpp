@@ -27,9 +27,22 @@ namespace hoffman::isaiah {
 				this->skipWhite();
 			}
 			/// <summary>Obtains the next token.</summary>
-			void getNext();
+			/// <returns>True if the end of the script has been reached.</returns>
+			bool getNext();
 			/// <summary>Scans the current token for commands.</summary>
 			void scan() noexcept;
+			/// <returns>The value of the lookahead token.</returns>
+			char getLookahead() const noexcept {
+				return *this->lookahead;
+			}
+			/// <returns>The last scanned token.</returns>
+			std::string getToken() const noexcept {
+				return this->token;
+			}
+			/// <returns>The last scanned token represented as a numerical command.</returns>
+			ScriptCommands getCommandToken() const noexcept {
+				return this->ctoken;
+			}
 			/// <returns>The location that the lexer is at in the script.</returns>
 			size_t getLocation() const noexcept {
 				return this->my_location;
@@ -48,6 +61,7 @@ namespace hoffman::isaiah {
 				this->my_location = loc;
 				this->lookahead = &this->script_text.at(loc);
 				this->line_number = line;
+				this->skipWhite();
 			}
 		protected:
 			/// <summary>Skips whitespace in the input text.</summary>
