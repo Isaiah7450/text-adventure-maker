@@ -109,7 +109,9 @@
     <ClCompile Include="parser\script_lexer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="parser\script_globals.hpp" />
     <ClInclude Include="parser\script_lexer.hpp" />
+    <ClInclude Include="parser\script_parser.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

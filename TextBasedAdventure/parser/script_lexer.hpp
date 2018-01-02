@@ -3,8 +3,8 @@
 // File Author: Isaiah Hoffman
 // File Created: December 30, 2017
 #include <string>
-#include <map>
 #include <iosfwd>
+#include "script_globals.hpp"
 namespace hoffman::isaiah {
 	namespace parser {
 		/// <summary>Represents the various types of tokens recognized by the lexical scanner.</summary>
@@ -12,24 +12,13 @@ namespace hoffman::isaiah {
 			Unknown, Command, Number
 		};
 
-		/// <summary>Represents the commands recognized by the script parser.</summary>
-		enum class ScriptCommands {
-			Unknown, Begin_Script, End_Script, State, Comment, End_Comment, Show_Text,
-			Set_Flag, Set_Flag_Indirect, Retrieve_Flag, Store_Flag,
-			Increment_Flag, Add_Flags, Subtract_Flags, Test_Flags,
-			Jump_If_Zero, Jump_If_Not_Zero, Jump_If_Positive, Jump_If_Negative,
-			Reset_Buffer, Add_To_Buffer, Test_Buffer, Jump_To_State,
-			End_Scenario, Change_Health, Kill_Player, Get_Input
-		};
-		/// <summary>Maps the textual representation of a command to its numerical representation.</summary>
-		extern std::map<std::string, ScriptCommands> commandTable;
-
 		/// <summary>Represents an object that performs lexical scanning and splits an input
 		/// string into individual tokens.</summary>
 		class ScriptLexer {
 		public:
 			/// <param name="script">A stream with the script to load.</param>
-			ScriptLexer(std::istream& script);
+			/// <param name="file">The name of the file being scanned. (Used for internal purposes.)</param>
+			ScriptLexer(std::istream& script, std::string file);
 			/// <param name="script">The script text to load.</param>
 			ScriptLexer(std::string script) :
 				script_text {script + '\0'},
@@ -37,22 +26,33 @@ namespace hoffman::isaiah {
 				token {""},
 				ttoken {ScriptTokenTypes::Unknown},
 				ctoken {ScriptCommands::Unknown},
-				my_location {0U} {
+				my_location {0U},
+				file_name {"(Internal)"},
+				line_number {1} {
 				this->skipWhite();
 			}
 			/// <summary>Obtains the next token.</summary>
 			void getNext();
 			/// <summary>Scans the current token for commands.</summary>
 			void scan() noexcept;
-
 			/// <returns>The location that the lexer is at in the script.</returns>
 			size_t getLocation() const noexcept {
 				return this->my_location;
 			}
+			/// <returns>The file being scanned by the lexer.</returns>
+			std::string getFileName() const noexcept {
+				return this->file_name;
+			}
+			/// <returns>The current line number of the lexer.</returns>
+			int getLineNumber() const noexcept {
+				return this->line_number;
+			}
 			/// <param name="loc">The new location to jump to in the script.</param>
-			void setLocation(size_t loc) {
+			/// <param name="line">The line number of the new location.</param>
+			void setLocation(size_t loc, int line) {
 				this->my_location = loc;
 				this->lookahead = &this->script_text.at(loc);
+				this->line_number = line;
 			}
 		protected:
 			/// <summary>Skips whitespace in the input text.</summary>
@@ -72,6 +72,10 @@ namespace hoffman::isaiah {
 			ScriptCommands ctoken;
 			/// <summary>This variable keeps track of where the lexical scanner is in the script text.</summary>
 			size_t my_location;
+			/// <summary>This variable keeps track of the file (if relevant) being scanned.</summary>
+			std::string file_name;
+			/// <summary>This variable keeps track of the current line the lexical scanner is at in the script text.</summary>
+			int line_number;
 		};
 	}
 }
