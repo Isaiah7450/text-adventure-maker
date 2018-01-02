@@ -14,7 +14,7 @@ namespace hoffman::isaiah {
 
 		/// <summary>Represents the commands recognized by the script parser.</summary>
 		enum class ScriptCommands {
-			Unknown, Begin_Script, End_Script, State, Comment, End_Comment, Show_Text,
+			Unknown, Number, Begin_Script, End_Script, State, Comment, End_Comment, Show_Text,
 			Set_Flag, Set_Flag_Indirect, Retrieve_Flag, Store_Flag,
 			Increment_Flag, Add_Flags, Subtract_Flags, Test_Flags,
 			Jump_If_Zero, Jump_If_Not_Zero, Jump_If_Positive, Jump_If_Negative,
