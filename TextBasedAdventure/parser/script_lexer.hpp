@@ -7,11 +7,6 @@
 #include "script_globals.hpp"
 namespace hoffman::isaiah {
 	namespace parser {
-		/// <summary>Represents the various types of tokens recognized by the lexical scanner.</summary>
-		enum class ScriptTokenTypes {
-			Unknown, Command, Number
-		};
-
 		/// <summary>Represents an object that performs lexical scanning and splits an input
 		/// string into individual tokens.</summary>
 		class ScriptLexer {

@@ -7,6 +7,11 @@
 #include <stdexcept>
 namespace hoffman::isaiah {
 	namespace parser {
+		/// <summary>Represents the various types of tokens recognized by the lexical scanner.</summary>
+		enum class ScriptTokenTypes {
+			Unknown, Command, Number
+		};
+
 		/// <summary>Represents the commands recognized by the script parser.</summary>
 		enum class ScriptCommands {
 			Unknown, Begin_Script, End_Script, State, Comment, End_Comment, Show_Text,
@@ -17,8 +22,8 @@ namespace hoffman::isaiah {
 			End_Scenario, Change_Health, Kill_Player, Get_Input
 		};
 
-		/// <summary>Maps the textual representation of a command to its numerical representation.</summary>
 		// (Defined in script_lexer.cpp)
+		/// <summary>Maps the textual representation of a command to its numerical representation.</summary>
 		extern std::map<std::string, ScriptCommands> commandTable;
 
 		// Forward declarations
@@ -42,7 +47,7 @@ namespace hoffman::isaiah {
 			std::string my_message;
 			/// <summary>This variable represents the file that the error occurred in.</summary>
 			std::string file_name;
-			/// <summary>This variable represents the line number that the error was encountered on.</param>
+			/// <summary>This variable represents the line number that the error was encountered on.</summary>
 			int line_number;
 		};
 
