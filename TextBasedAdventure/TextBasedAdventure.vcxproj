@@ -107,6 +107,7 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="parser\script_lexer.cpp" />
+    <ClCompile Include="parser\script_parser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="parser\script_globals.hpp" />
