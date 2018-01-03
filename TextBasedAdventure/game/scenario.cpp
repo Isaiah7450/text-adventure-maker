@@ -27,21 +27,27 @@ namespace hoffman::isaiah {
 			auto fileName = "./scenarios/"s + this->scenario_name + "/strings.txt"s;
 			std::ifstream myFile {fileName};
 			std::string buffer {};
-			bool reached_end = false;
+			bool reached_end = myFile.fail() || myFile.bad();
 			int line_no = 1;
 			while (!reached_end) {
-				reached_end = static_cast<bool>(std::getline(myFile, buffer, ' '));
+				reached_end = !std::getline(myFile, buffer, ' ');
 				if (!reached_end) {
-					int str_no = std::stoi(buffer);
-					if (std::to_string(str_no) != buffer) {
+					int str_no = 0;
+					try {
+						str_no = std::stoi(buffer);
+						if (std::to_string(str_no) != buffer) {
+							throw std::string {"Invalid input."};
+						}
+					}
+					catch (...) {
 						throw parser::ScriptError {"Invalid string number: "s + buffer + "."s,
 							parser::ErrorSeverity::Error, fileName, line_no};
 					}
-					else if (this->string_table.find(str_no) != this->string_table.end()) {
+					if (this->string_table.find(str_no) != this->string_table.end()) {
 						throw parser::ScriptError {"Duplicate string number: "s + buffer + "."s,
 							parser::ErrorSeverity::Error, fileName, line_no};
 					}
-					reached_end = static_cast<bool>(std::getline(myFile, buffer, '\n'));
+					reached_end = !std::getline(myFile, buffer, '\n');
 					this->string_table.emplace(str_no, buffer);
 				}
 				++line_no;
@@ -186,17 +192,23 @@ namespace hoffman::isaiah {
 			assert(y >= 0 && y < Scenario::max_y_flag);
 			bool validInput = false;
 			int userInput = -1;
+			auto startPos = std::cout.tellp();
 			do {
 				std::string buffer {};
 				std::getline(std::cin, buffer, '\n');
-				userInput = std::stoi(buffer);
-				// If an invalid input is given (as in not a number)
-				if (std::to_string(userInput) != buffer) {
-					std::cout << '\r';
-					std::cout.flush();
+				try {
+					userInput = std::stoi(buffer);
+					// If an invalid input is given (as in not a number)
+					if (std::to_string(userInput) != buffer) {
+						throw std::string {"Invalid input."};
+					}
+					else {
+						validInput = true;
+					}
 				}
-				else {
-					validInput = true;
+				catch (...) {
+					std::cout << "Try again: ";
+					std::cout.flush();
 				}
 			} while (!validInput);
 			this->scen_flags[x][y] = userInput;

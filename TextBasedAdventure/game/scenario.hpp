@@ -83,6 +83,10 @@ namespace hoffman::isaiah {
 			/// <summary>Checks if the number buffer's value is negative.</summary>
 			/// <returns>True if the number buffer's value is negative.</returns>
 			bool checkIfNegative() const noexcept;
+			/// <returns>The current value of the number buffer.</returns>
+			int getBuffer() const noexcept {
+				return this->number_buffer;
+			}
 			/// <summary>Resets the number buffer's value to zero.</summary>
 			void resetBuffer() noexcept;
 			/// <summary>Adds a value directly to the number buffer.</summary>

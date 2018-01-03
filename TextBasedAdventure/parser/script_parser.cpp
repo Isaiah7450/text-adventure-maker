@@ -25,46 +25,34 @@ namespace hoffman::isaiah {
 		ScriptParser::~ScriptParser() noexcept = default;
 
 		void ScriptParser::start(int start_state) {
-			try {
-				// Create jump table
-				while (!this->lexer->getNext()) {
-					this->lexer->scan();
-					this->lexer->skipComments();
-					auto command = this->lexer->getCommandToken();
-					if (command == ScriptCommands::State) {
-						this->lexer->getNext();
-						if (this->lexer->getCommandToken() != ScriptCommands::Number) {
-							// Invalid parameter
-							throw ScriptParseError {"Expected a number following a `State` command.",
-								ErrorSeverity::Error, this->lexer->getFileName(), this->lexer->getLineNumber()};
-						}
-						auto state_number = std::stoi(this->lexer->getToken());
-						if (this->jumpTable.find(state_number) != this->jumpTable.end()) {
-							// Repeated state number
-							throw ScriptParseError {"State number "s + std::to_string(state_number) + " was repeated."s,
-								ErrorSeverity::Error, this->lexer->getFileName(), this->lexer->getLineNumber()};
-						}
-						// Add to jump table
-						this->jumpTable.emplace(state_number, std::make_pair<size_t, int>(this->lexer->getLocation(),
-							this->lexer->getLineNumber()));
+			// Create jump table
+			while (!this->lexer->getNext()) {
+				this->lexer->scan();
+				this->lexer->skipComments();
+				auto command = this->lexer->getCommandToken();
+				if (command == ScriptCommands::State) {
+					auto state_number = this->parseNumber();
+					if (this->jumpTable.find(state_number) != this->jumpTable.end()) {
+						// Repeated state number
+						throw ScriptParseError {"State number "s + std::to_string(state_number) + " was repeated."s,
+							ErrorSeverity::Error, this->lexer->getFileName(), this->lexer->getLineNumber()};
 					}
-					if (start_state == -1) {
-						// Reset scanner to beginning of file so that we can start parsing.
-						this->lexer->setLocation(0U, 1);
-					}
-					else {
-						this->checkStateExists(start_state);
-						auto start_loc = this->jumpTable.at(start_state);
-						// Set jump location to the provided start state.
-						this->lexer->setLocation(start_loc.first, start_loc.second);
-					}
+					// Add to jump table
+					this->jumpTable.emplace(state_number, std::make_pair(this->lexer->getLocation(),
+						this->lexer->getLineNumber()));
 				}
-				this->parseScript();
 			}
-			catch (const ScriptError& e) {
-				// Handle all errors
-				std::cerr << e.what();
+			if (start_state == -1) {
+				// Reset scanner to beginning of file so that we can start parsing.
+				this->lexer->setLocation(0U, 1);
 			}
+			else {
+				this->checkStateExists(start_state);
+				auto start_loc = this->jumpTable.at(start_state);
+				// Set jump location to the provided start state.
+				this->lexer->setLocation(start_loc.first, start_loc.second);
+			}
+			this->parseScript();
 		}
 
 		void ScriptParser::parseScript() {
@@ -82,7 +70,7 @@ namespace hoffman::isaiah {
 					{
 						auto text_no = this->parseNumber();
 						if (!this->scenario_data.doesStringExist(text_no)) {
-							throw ScriptParseError {"No string with "s + std::to_string(text_no) + " exists."s,
+							throw ScriptParseError {"String number "s + std::to_string(text_no) + " does not exist."s,
 								ErrorSeverity::Error, this->lexer->getFileName(), this->lexer->getLineNumber()};
 						}
 						this->scenario_data.showText(text_no);
@@ -174,6 +162,21 @@ namespace hoffman::isaiah {
 						// Do jump if appropriate
 						if (do_jump) {
 							auto jump_loc = this->jumpTable.at(state_no);
+							this->lexer->setLocation(jump_loc.first, jump_loc.second);
+						}
+						break;
+					}
+					case ScriptCommands::Jump_On_Buffer:
+					{
+						auto min_state = this->parseNumber();
+						auto max_state = this->parseNumber();
+						if (max_state < min_state) {
+							throw ScriptParseError {"Invalid bounds for `Jump_On_Buffer` command.",
+								ErrorSeverity::Error, this->lexer->getFileName(), this->lexer->getLineNumber()};
+						}
+						auto jump_state = this->scenario_data.getBuffer();
+						if (jump_state >= min_state && jump_state <= max_state) {
+							auto jump_loc = this->jumpTable.at(jump_state);
 							this->lexer->setLocation(jump_loc.first, jump_loc.second);
 						}
 						break;

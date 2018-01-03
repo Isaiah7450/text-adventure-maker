@@ -28,17 +28,24 @@ namespace hoffman::isaiah {
 			{"Subtract_Flags", ScriptCommands::Subtract_Flags},
 			{"Test_Flags", ScriptCommands::Test_Flags},
 			{"Jump_If_Zero", ScriptCommands::Jump_If_Zero}, {"JIZ", ScriptCommands::Jump_If_Zero},
+			{"Jump_On_Zero", ScriptCommands::Jump_If_Zero}, {"JOZ", ScriptCommands::Jump_If_Zero},
 			{"Jump_If_Not_Zero", ScriptCommands::Jump_If_Not_Zero}, {"JINZ", ScriptCommands::Jump_If_Not_Zero},
-			{"Jump_If_Positive", ScriptCommands::Jump_If_Positive}, {"JGT", ScriptCommands::Jump_If_Positive},
-			{"Jump_If_Negative", ScriptCommands::Jump_If_Negative}, {"JLT", ScriptCommands::Jump_If_Negative},
+			{"Jump_On_Not_Zero", ScriptCommands::Jump_If_Not_Zero}, {"JONZ", ScriptCommands::Jump_If_Not_Zero},
+			{"Jump_If_Positive", ScriptCommands::Jump_If_Positive}, {"JIGT", ScriptCommands::Jump_If_Positive},
+			{"Jump_On_Positive", ScriptCommands::Jump_If_Positive}, {"JOGT", ScriptCommands::Jump_If_Positive},
+			{"Jump_If_Negative", ScriptCommands::Jump_If_Negative}, {"JILT", ScriptCommands::Jump_If_Negative},
+			{"Jump_On_Negative", ScriptCommands::Jump_If_Negative}, {"JOLT", ScriptCommands::Jump_If_Negative},
+			{"Jump_On_Buffer", ScriptCommands::Jump_On_Buffer},
 			{"Reset_Buffer", ScriptCommands::Reset_Buffer}, {"Clear_Buffer", ScriptCommands::Reset_Buffer},
 			{"Set_Buffer_To_Zero", ScriptCommands::Reset_Buffer},
 			{"Add_To_Buffer", ScriptCommands::Add_To_Buffer}, {"Increment_Buffer", ScriptCommands::Add_To_Buffer},
 			{"Test_Buffer", ScriptCommands::Test_Buffer}, {"Subtract_From_Buffer", ScriptCommands::Test_Buffer},
 			{"Jump_To_State", ScriptCommands::Jump_To_State}, {"Go_To_State", ScriptCommands::Jump_To_State},
-			{"Goto_State", ScriptCommands::Jump_To_State}, {"Jump", ScriptCommands::Jump_To_State},
+			{"Goto_State", ScriptCommands::Jump_To_State}, {"JMP", ScriptCommands::Jump_To_State},
 			{"Change_Health", ScriptCommands::Change_Health}, {"Kill_Player", ScriptCommands::Kill_Player},
-			{"Get_Input", ScriptCommands::Get_Input}, {"Pause", ScriptCommands::Pause}
+			{"Get_Input", ScriptCommands::Get_Input},
+			{"Pause", ScriptCommands::Pause}, {"Pause_Script", ScriptCommands::Pause},
+			{"End_Scenario", ScriptCommands::End_Scenario}
 		};
 
 		ScriptLexer::ScriptLexer(std::istream& script, std::string file) :
@@ -64,6 +71,8 @@ namespace hoffman::isaiah {
 		}
 
 		bool ScriptLexer::getNext() {
+			// Reset token
+			this->token = "";
 			// Make sure we do not go past the end of the file.
 			if (this->getLookahead() != '\0') {
 				// Keep track of start location
@@ -106,12 +115,12 @@ namespace hoffman::isaiah {
 					if (this->getLookahead() != ' ' && this->getLookahead() != '\t'
 						&& this->getLookahead() != '\r' && this->getLookahead() != '\n'
 						&& this->getLookahead() != '\0') {
-						throw ScriptLexicalError {"Invalid command token.", ErrorSeverity::Error,
+						throw ScriptLexicalError {"Invalid command token: " + this->getToken(), ErrorSeverity::Error,
 							this->getFileName(), this->getLineNumber()};
 					}
 				}
 				// Update location
-				this->my_location = this->lookahead - startChar;
+				this->my_location += this->lookahead - startChar;
 				this->skipWhite();
 			}
 			else {

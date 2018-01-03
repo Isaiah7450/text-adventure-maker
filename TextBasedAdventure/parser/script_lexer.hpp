@@ -44,6 +44,7 @@ namespace hoffman::isaiah {
 					{ScriptCommands::Subtract_Flags, "Subtract_Flags"}, {ScriptCommands::Test_Flags, "Test_Flags"},
 					{ScriptCommands::Jump_If_Zero, "Jump_If_Zero"}, {ScriptCommands::Jump_If_Not_Zero, "Jump_If_Not_Zero"},
 					{ScriptCommands::Jump_If_Positive, "Jump_If_Positive"}, {ScriptCommands::Jump_If_Negative, "Jump_If_Negative"},
+					{ScriptCommands::Jump_On_Buffer, "Jump_On_Buffer"},
 					{ScriptCommands::Reset_Buffer, "Reset_Buffer"}, {ScriptCommands::Add_To_Buffer, "Add_To_Buffer"},
 					{ScriptCommands::Test_Buffer, "Subtract_From_Buffer"}, {ScriptCommands::Jump_To_State, "Jump_To_State"},
 					{ScriptCommands::End_Scenario, "End_Scenario"}, {ScriptCommands::Change_Health, "Change_Health"},

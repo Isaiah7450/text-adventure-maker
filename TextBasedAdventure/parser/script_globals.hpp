@@ -17,7 +17,7 @@ namespace hoffman::isaiah {
 			Unknown, Number, Begin_Script, End_Script, State, Comment, End_Comment, Show_Text,
 			Set_Flag, Set_Flag_Indirect, Retrieve_Flag, Store_Flag,
 			Increment_Flag, Add_Flags, Subtract_Flags, Test_Flags,
-			Jump_If_Zero, Jump_If_Not_Zero, Jump_If_Positive, Jump_If_Negative,
+			Jump_If_Zero, Jump_If_Not_Zero, Jump_If_Positive, Jump_If_Negative, Jump_On_Buffer,
 			Reset_Buffer, Add_To_Buffer, Test_Buffer, Jump_To_State,
 			End_Scenario, Change_Health, Kill_Player, Get_Input, Pause
 		};
