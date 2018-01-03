@@ -19,7 +19,7 @@ namespace hoffman::isaiah {
 			Increment_Flag, Add_Flags, Subtract_Flags, Test_Flags,
 			Jump_If_Zero, Jump_If_Not_Zero, Jump_If_Positive, Jump_If_Negative,
 			Reset_Buffer, Add_To_Buffer, Test_Buffer, Jump_To_State,
-			End_Scenario, Change_Health, Kill_Player, Get_Input
+			End_Scenario, Change_Health, Kill_Player, Get_Input, Pause
 		};
 
 		// (Defined in script_lexer.cpp)
@@ -31,7 +31,7 @@ namespace hoffman::isaiah {
 		class ScriptParser;
 
 		enum class ErrorSeverity {
-			Info, Warning, Error
+			Info, Warning, Error, Internal
 		};
 
 		// Exception classes
@@ -42,7 +42,8 @@ namespace hoffman::isaiah {
 				runtime_error {message},
 				my_message {"In file " + file + " on line " + std::to_string(line)
 				+ ":\n" + (severity == ErrorSeverity::Error ? "Error: "
-					: (severity == ErrorSeverity::Warning ? "Warning: " : "Note: "))
+					: (severity == ErrorSeverity::Warning ? "Warning: "
+					: (severity == ErrorSeverity::Internal ? "Internal Error: " : "Note: ")))
 				+ message + "\n"},
 				my_severity {severity} {
 			}

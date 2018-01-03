@@ -31,6 +31,31 @@ namespace hoffman::isaiah {
 			bool getNext();
 			/// <summary>Scans the current token for commands.</summary>
 			void scan() noexcept;
+			/// <summary>Checks if the current token matches the provided command.</summary>
+			/// <param name="command">The command to test for.</param>
+			void matchCommand(ScriptCommands command) {
+				static const std::map<ScriptCommands, std::string> commandStrings {
+					{ScriptCommands::Number, "a number"},
+					{ScriptCommands::Begin_Script, "Begin_Script"}, {ScriptCommands::End_Script, "End_Script"},
+					{ScriptCommands::State, "State"}, {ScriptCommands::Show_Text, "Show_Text"},
+					{ScriptCommands::Set_Flag, "Set_Flag"}, {ScriptCommands::Set_Flag_Indirect, "Copy_Flag"},
+					{ScriptCommands::Retrieve_Flag, "Retrieve_Flag"}, {ScriptCommands::Store_Flag, "Store_Flag"},
+					{ScriptCommands::Increment_Flag, "Change_Flag"}, {ScriptCommands::Add_Flags, "Add_Flags"},
+					{ScriptCommands::Subtract_Flags, "Subtract_Flags"}, {ScriptCommands::Test_Flags, "Test_Flags"},
+					{ScriptCommands::Jump_If_Zero, "Jump_If_Zero"}, {ScriptCommands::Jump_If_Not_Zero, "Jump_If_Not_Zero"},
+					{ScriptCommands::Jump_If_Positive, "Jump_If_Positive"}, {ScriptCommands::Jump_If_Negative, "Jump_If_Negative"},
+					{ScriptCommands::Reset_Buffer, "Reset_Buffer"}, {ScriptCommands::Add_To_Buffer, "Add_To_Buffer"},
+					{ScriptCommands::Test_Buffer, "Subtract_From_Buffer"}, {ScriptCommands::Jump_To_State, "Jump_To_State"},
+					{ScriptCommands::End_Scenario, "End_Scenario"}, {ScriptCommands::Change_Health, "Change_Health"},
+					{ScriptCommands::Kill_Player, "Kill_Player"}, {ScriptCommands::Get_Input, "Get_Input"},
+					{ScriptCommands::Pause, "Pause"}
+				};
+				if (this->getCommandToken() != command) {
+					// This is a parsing error; the provided token is acceptable
+					throw ScriptParseError {"Expected `" + commandStrings.at(command) + "`, but received `"
+						+ this->getToken() + "`.", ErrorSeverity::Error, this->getFileName(), this->getLineNumber()};
+				}
+			}
 			/// <returns>The value of the lookahead token.</returns>
 			char getLookahead() const noexcept {
 				return *this->lookahead;

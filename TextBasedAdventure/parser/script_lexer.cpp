@@ -37,9 +37,8 @@ namespace hoffman::isaiah {
 			{"Test_Buffer", ScriptCommands::Test_Buffer}, {"Subtract_From_Buffer", ScriptCommands::Test_Buffer},
 			{"Jump_To_State", ScriptCommands::Jump_To_State}, {"Go_To_State", ScriptCommands::Jump_To_State},
 			{"Goto_State", ScriptCommands::Jump_To_State}, {"Jump", ScriptCommands::Jump_To_State},
-			{"Change_Health", ScriptCommands::Change_Health},
-			{"Kill_Player", ScriptCommands::Kill_Player},
-			{"Get_Input", ScriptCommands::Get_Input}
+			{"Change_Health", ScriptCommands::Change_Health}, {"Kill_Player", ScriptCommands::Kill_Player},
+			{"Get_Input", ScriptCommands::Get_Input}, {"Pause", ScriptCommands::Pause}
 		};
 
 		ScriptLexer::ScriptLexer(std::istream& script, std::string file) :
@@ -114,6 +113,11 @@ namespace hoffman::isaiah {
 				// Update location
 				this->my_location = this->lookahead - startChar;
 				this->skipWhite();
+			}
+			else {
+				this->token = "end of file\0";
+				this->ttoken = ScriptTokenTypes::Unknown;
+				this->ctoken = ScriptCommands::Unknown;
 			}
 			if (this->getLookahead() == '\0') {
 				return true;
