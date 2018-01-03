@@ -7,11 +7,47 @@
 #include <iostream>
 #include <fstream>
 #include <conio.h>
-#include "scenario.hpp"
+#include "./../game/scenario.hpp"
+#include "./../parser/script_globals.hpp"
 using namespace std::literals::string_literals;
 
 namespace hoffman::isaiah {
 	namespace game {
+		Scenario::Scenario(std::string scen_name, std::string p_name) :
+			scenario_name {scen_name},
+			player_name {p_name},
+			player_health {100},
+			scen_flags {},
+			string_table {},
+			number_buffer {0} {
+			this->loadStrings();
+		}
+
+		void Scenario::loadStrings() {
+			auto fileName = "./scenarios/"s + this->scenario_name + "/strings.txt"s;
+			std::ifstream myFile {fileName};
+			std::string buffer {};
+			bool reached_end = false;
+			int line_no = 1;
+			while (!reached_end) {
+				reached_end = static_cast<bool>(std::getline(myFile, buffer, ' '));
+				if (!reached_end) {
+					int str_no = std::stoi(buffer);
+					if (std::to_string(str_no) != buffer) {
+						throw parser::ScriptError {"Invalid string number: "s + buffer + "."s,
+							parser::ErrorSeverity::Error, fileName, line_no};
+					}
+					else if (this->string_table.find(str_no) != this->string_table.end()) {
+						throw parser::ScriptError {"Duplicate string number: "s + buffer + "."s,
+							parser::ErrorSeverity::Error, fileName, line_no};
+					}
+					reached_end = static_cast<bool>(std::getline(myFile, buffer, '\n'));
+					this->string_table.emplace(str_no, buffer);
+				}
+				++line_no;
+			}
+		}
+
 		// Commands
 		void Scenario::showText(int number) {
 			assert(number >= 0);
@@ -96,6 +132,10 @@ namespace hoffman::isaiah {
 
 		bool Scenario::checkIfNegative() const noexcept {
 			return this->number_buffer < 0;
+		}
+
+		void Scenario::resetBuffer() noexcept {
+			this->number_buffer = 0;
 		}
 
 		void Scenario::addToBuffer(int v) noexcept {

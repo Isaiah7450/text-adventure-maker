@@ -11,6 +11,10 @@ namespace hoffman::isaiah {
 		/// <summary>Class that represents a scenario.</summary> 
 		class Scenario {
 		public:
+			/// <param name="scen_name">The name of the scenario.</param>
+			/// <param name="p_name">The name of the player.</param>
+			Scenario(std::string scen_name, std::string p_name);
+
 			// Commands
 			// Warning: None of the parameters for commands are validated here.
 			// It is IMPERATIVE that the script parser validates command paramaters.
@@ -80,7 +84,7 @@ namespace hoffman::isaiah {
 			/// <returns>True if the number buffer's value is negative.</returns>
 			bool checkIfNegative() const noexcept;
 			/// <summary>Resets the number buffer's value to zero.</summary>
-			void resetBuffer() const noexcept;
+			void resetBuffer() noexcept;
 			/// <summary>Adds a value directly to the number buffer.</summary>
 			/// <param name="v">The value to add to the buffer.</param>
 			void addToBuffer(int v) noexcept;
@@ -104,12 +108,20 @@ namespace hoffman::isaiah {
 			void getInput(int x, int y);
 			/// <summary>Pauses the scenario until the player provides an input.</summary>
 			void pause() noexcept;
+			/// <summary>Checks if a string with the given number exist.</summary>
+			/// <param name="number">The number associated with the string.</param>
+			bool doesStringExist(int number) const noexcept {
+				return this->string_table.find(number) != this->string_table.end();
+			}
 			// The maximum valid state number that can be used in a scenario.
 			static constexpr const size_t max_state_number = 99999U;
 			// The maximum valid x and y indices for the scenario's flags.
 			static constexpr const size_t max_x_flag = 400U;
 			static constexpr const size_t max_y_flag = 25U;
 		protected:
+			/// <summary>Loads the scenario's strings from the string file.</summary>
+			void loadStrings();
+			/// <summary>Displays some texts when the player dies.</summary>
 			void doDeathSequence() const noexcept;
 		private:
 			/// <summary>This variable represents the scenario's name.</summary>
