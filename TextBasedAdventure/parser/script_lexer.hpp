@@ -63,6 +63,8 @@ namespace hoffman::isaiah {
 				this->line_number = line;
 				this->skipWhite();
 			}
+			/// <summary>Skips comments in the input text.</summary>
+			void skipComments();
 		protected:
 			/// <summary>Skips whitespace in the input text.</summary>
 			void skipWhite() noexcept;
