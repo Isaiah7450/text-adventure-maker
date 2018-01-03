@@ -30,39 +30,49 @@ namespace hoffman::isaiah {
 		class ScriptLexer;
 		class ScriptParser;
 
+		enum class ErrorSeverity {
+			Info, Warning, Error
+		};
+
 		// Exception classes
 		class ScriptError : public std::runtime_error {
 		public:
-			ScriptError(std::string message, std::string file, int line) :
+			/// <param name="message">The error message to display.</param>
+			ScriptError(std::string message, ErrorSeverity severity, std::string file, int line) :
 				runtime_error {message},
-				my_message {"In file " + file + " on line " + std::to_string(line) + ": " + message + "\n"},
-				file_name {file},
-				line_number {line} {
+				my_message {"In file " + file + " on line " + std::to_string(line)
+				+ ":\n" + (severity == ErrorSeverity::Error ? "Error: "
+					: (severity == ErrorSeverity::Warning ? "Warning: " : "Note: "))
+				+ message + "\n"},
+				my_severity {severity} {
 			}
+			/// <returns>The error message.</returns>
 			const char* what() const override {
 				return this->my_message.c_str();
+			}
+			/// <returns>The severity level of the error.</returns>
+			ErrorSeverity getLevel() const noexcept {
+				return this->my_severity;
 			}
 		private:
 			/// <summary>This variable represents the message to display when calling the what() function.</summary>
 			std::string my_message;
-			/// <summary>This variable represents the file that the error occurred in.</summary>
-			std::string file_name;
-			/// <summary>This variable represents the line number that the error was encountered on.</summary>
-			int line_number;
+			/// <summary>This variable represents the severity of the error.</summary>
+			ErrorSeverity my_severity;
 		};
 
 		/// <summary>Represents a script error that occurred during parsing.</summary>
 		class ScriptParseError : public ScriptError {
 		public:
-			ScriptParseError(std::string message, std::string file, int line) :
-				ScriptError {message, file, line} {
+			ScriptParseError(std::string message, ErrorSeverity severity, std::string file, int line) :
+				ScriptError {message, severity, file, line} {
 			}
 		};
 		/// <summary>Represents a script error that occurred during lexical scanning.</summary>
 		class ScriptLexicalError : public ScriptError {
 		public:
-			ScriptLexicalError(std::string message, std::string file, int line) :
-				ScriptError {message, file, line} {
+			ScriptLexicalError(std::string message, ErrorSeverity severity, std::string file, int line) :
+				ScriptError {message, severity, file, line} {
 			}
 		};
 	}
