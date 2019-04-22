@@ -32,23 +32,35 @@ namespace hoffman::isaiah {
 			while (!reached_end) {
 				reached_end = !std::getline(myFile, buffer, ' ');
 				if (!reached_end) {
-					int str_no = 0;
-					try {
-						str_no = std::stoi(buffer);
-						if (std::to_string(str_no) != buffer) {
-							throw std::string {"Invalid input."};
+					if (buffer[0] != '\'') {
+						int str_no = 0;
+						try {
+							size_t substring_start = 0;
+							while (buffer.at(substring_start) == '\n' || buffer.at(substring_start) == '\r'
+								|| buffer.at(substring_start) == '\t' || buffer.at(substring_start) == ' ') {
+								++substring_start;
+							}
+							buffer = buffer.substr(substring_start);
+							str_no = std::stoi(buffer);
+							if (std::to_string(str_no) != buffer) {
+								throw std::string {"Invalid input."};
+							}
 						}
+						catch (...) {
+							throw parser::ScriptError {"Invalid string number: "s + buffer + "."s,
+								parser::ErrorSeverity::Error, fileName, line_no};
+						}
+						if (this->string_table.find(str_no) != this->string_table.end()) {
+							throw parser::ScriptError {"Duplicate string number: "s + buffer + "."s,
+								parser::ErrorSeverity::Error, fileName, line_no};
+						}
+						reached_end = !std::getline(myFile, buffer, '\n');
+						this->string_table.emplace(str_no, buffer);
 					}
-					catch (...) {
-						throw parser::ScriptError {"Invalid string number: "s + buffer + "."s,
-							parser::ErrorSeverity::Error, fileName, line_no};
+					else {
+						reached_end = !std::getline(myFile, buffer, '\n');
+						continue;
 					}
-					if (this->string_table.find(str_no) != this->string_table.end()) {
-						throw parser::ScriptError {"Duplicate string number: "s + buffer + "."s,
-							parser::ErrorSeverity::Error, fileName, line_no};
-					}
-					reached_end = !std::getline(myFile, buffer, '\n');
-					this->string_table.emplace(str_no, buffer);
 				}
 				++line_no;
 			}
@@ -233,8 +245,8 @@ namespace hoffman::isaiah {
 
 		void Scenario::appendStringIndirect(int x, int y) {
 			// Warning: unsafe without script validation!
-			assert(x >= 0 && x_get < Scenario::max_x_flag);
-			assert(y >= 0 && y_get < Scenario::max_y_flag);
+			assert(x >= 0 && x < Scenario::max_x_flag);
+			assert(y >= 0 && y < Scenario::max_y_flag);
 			assert(this->scen_flags[x][y] >= 0);
 			this->appendString(this->scen_flags[x][y]);
 		}
