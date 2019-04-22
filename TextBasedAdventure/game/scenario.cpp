@@ -7,6 +7,7 @@
 #include <memory>
 #include <string>
 #include <cassert>
+#include <cinttypes>
 #include <conio.h>
 #include "./../game/scenario.hpp"
 #include "./../parser/script_globals.hpp"
@@ -18,7 +19,7 @@ namespace hoffman::isaiah {
 			scenario_name {scen_name},
 			player_name {p_name},
 			player_health {100},
-			scen_flags {std::make_unique<std::array<std::array<int, Scenario::max_y_flag>, Scenario::max_x_flag>>()},
+			scen_flags {std::make_unique<std::array<std::array<std::int16_t, Scenario::max_y_flag>, Scenario::max_x_flag>>()},
 			string_table {},
 			number_buffer {0} {
 			this->loadStrings();
@@ -73,7 +74,7 @@ namespace hoffman::isaiah {
 			std::cout << this->string_table.at(number) << '\n';
 		}
 
-		void Scenario::setFlag(int x, int y, int v) {
+		void Scenario::setFlag(int x, int y, std::int16_t v) {
 			// Warning: unsafe without script validation!
 			assert(x >= 0 && x < Scenario::max_x_flag);
 			assert(y >= 0 && y < Scenario::max_y_flag);
@@ -103,7 +104,7 @@ namespace hoffman::isaiah {
 			this->number_buffer = (*this->scen_flags)[x_get][y_get];
 		}
 
-		void Scenario::incrementFlag(int x, int y, int amt) {
+		void Scenario::incrementFlag(int x, int y, std::int16_t amt) {
 			// Warning: unsafe without script validation!
 			assert(x >= 0 && x < Scenario::max_x_flag);
 			assert(y >= 0 && y < Scenario::max_y_flag);
@@ -157,11 +158,11 @@ namespace hoffman::isaiah {
 			this->number_buffer = 0;
 		}
 
-		void Scenario::addToBuffer(int v) noexcept {
+		void Scenario::addToBuffer(std::int16_t v) noexcept {
 			this->number_buffer += v;
 		}
 
-		void Scenario::testBuffer(int v) noexcept {
+		void Scenario::testBuffer(std::int16_t v) noexcept {
 			this->number_buffer -= v;
 		}
 
@@ -183,7 +184,7 @@ namespace hoffman::isaiah {
 			this->number_buffer = this->player_health;
 		}
 
-		bool Scenario::changeHealth(int amt) noexcept {
+		bool Scenario::changeHealth(std::int16_t amt) noexcept {
 			if (amt > 0) {
 				std::cout << "You gained " << amt << " health.\n";
 			}
@@ -208,13 +209,13 @@ namespace hoffman::isaiah {
 			assert(x >= 0 && x < Scenario::max_x_flag);
 			assert(y >= 0 && y < Scenario::max_y_flag);
 			bool validInput = false;
-			int userInput = -1;
+			std::int16_t userInput = -1;
 			auto startPos = std::cout.tellp();
 			do {
 				std::string buffer {};
 				std::getline(std::cin, buffer, '\n');
 				try {
-					userInput = std::stoi(buffer);
+					userInput = static_cast<std::int16_t>(std::stoi(buffer));
 					// If an invalid input is given (as in not a number)
 					if (std::to_string(userInput) != buffer) {
 						throw std::string {"Invalid input."};
@@ -248,7 +249,7 @@ namespace hoffman::isaiah {
 			// Warning: unsafe without script validation!
 			assert(x >= 0 && x < Scenario::max_x_flag);
 			assert(y >= 0 && y < Scenario::max_y_flag);
-			assert((*this->scen_flags[x][y]) >= 0);
+			assert((*this->scen_flags)[x][y] >= 0);
 			this->appendString((*this->scen_flags)[x][y]);
 		}
 

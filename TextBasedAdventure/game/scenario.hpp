@@ -6,6 +6,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <cinttypes>
 
 namespace hoffman::isaiah {
 	namespace game {
@@ -27,7 +28,7 @@ namespace hoffman::isaiah {
 			/// <param name="x">The x-index of the flag to set.</param>
 			/// <param name="y">The y-index of the flag to set.</param>
 			/// <param name="v">The value to set the flag at (x, y) to.</param>
-			void setFlag(int x, int y, int v);
+			void setFlag(int x, int y, std::int16_t v);
 			/// <summary>Sets a flag to another flag's value.
 			/// To put it another way, this function copies one flag to another flag.</summary>
 			/// <param name="x_set">The x-index of the flag to set.</param>
@@ -52,7 +53,7 @@ namespace hoffman::isaiah {
 			/// <param name="x">The x-index of the flag to change.</param>
 			/// <param name="y">The y-index of the flag to change.</param>
 			/// <param name="amt">The amount by which to change the flag's value.</param>
-			void incrementFlag(int x, int y, int amt);
+			void incrementFlag(int x, int y, std::int16_t amt);
 			/// <summary>Adds two flags' values and stores the result in the first flag.</summary>
 			/// <param name="x_set">The x-index of the flag to store the result in.</param>
 			/// <param name="y_set">The y-index of the flag to store the result in.</param>
@@ -92,10 +93,10 @@ namespace hoffman::isaiah {
 			void resetBuffer() noexcept;
 			/// <summary>Adds a value directly to the number buffer.</summary>
 			/// <param name="v">The value to add to the buffer.</param>
-			void addToBuffer(int v) noexcept;
+			void addToBuffer(std::int16_t v) noexcept;
 			/// <summary>Subtracts a value from the number buffer.</summary>
 			/// <param name="v">The value to subtract from the buffer.</param>
-			void testBuffer(int v) noexcept;
+			void testBuffer(std::int16_t v) noexcept;
 			/// <summary>Ends the scenario.</summary>
 			/// <param name="status">The ending status of the scenario.
 			/// Zero indicates premature exit, one indicates success,
@@ -106,7 +107,7 @@ namespace hoffman::isaiah {
 			/// <summary>Changes the health of the player.</summary>
 			/// <param name="amt">The amount by which to change the player's health.</param>
 			/// <returns>True if the player is still alive else false.</returns>
-			bool changeHealth(int amt) noexcept;
+			bool changeHealth(std::int16_t amt) noexcept;
 			/// <summary>Kills the player triggering a death ending.</summary>
 			void killPlayer() noexcept;
 			/// <summary>Obtains a number from the player and stores it in a flag.</summary>
@@ -152,13 +153,13 @@ namespace hoffman::isaiah {
 			/// <summary>This variable represents the player's name.</summary>
 			std::string player_name;
 			/// <summary>The variable represents the amount of health the player has remaining.</summary>
-			int player_health;
+			std::int16_t player_health;
 			/// <summary>This variable is a two-dimensional array of flags that the scenario uses.</summary>
-			std::unique_ptr<std::array<std::array<int, Scenario::max_y_flag>, Scenario::max_x_flag>> scen_flags;
+			std::unique_ptr<std::array<std::array<std::int16_t, Scenario::max_y_flag>, Scenario::max_x_flag>> scen_flags;
 			/// <summary>This variable maps the scenario's string numbers to the proper string used by the scenario.</summary>
 			std::map<int, std::string> string_table;
 			/// <summary>This variable represents the number buffer utilized by the scenario.</summary>
-			int number_buffer;
+			std::int16_t number_buffer;
 			/// <summary>This variable represents the string buffer utilized by the scenario.</summary>
 			std::string string_buffer {};
 		};

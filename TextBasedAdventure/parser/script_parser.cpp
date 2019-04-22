@@ -5,6 +5,7 @@
 #include <map>
 #include <utility>
 #include <memory>
+#include <cinttypes>
 #include "./../parser/script_globals.hpp"
 #include "./../parser/script_parser.hpp"
 #include "./../parser/script_lexer.hpp"
@@ -79,7 +80,7 @@ namespace hoffman::isaiah {
 					case ScriptCommands::Set_Flag:
 					{
 						auto myFlag = this->parseFlag();
-						auto value = this->parseNumber();
+						auto value = static_cast<std::int16_t>(this->parseNumber());
 						this->scenario_data.setFlag(myFlag.first, myFlag.second, value);
 						break;
 					}
@@ -106,7 +107,7 @@ namespace hoffman::isaiah {
 					case ScriptCommands::Increment_Flag:
 					{
 						auto myFlag = this->parseFlag();
-						auto amount = this->parseNumber();
+						auto amount = static_cast<std::int16_t>(this->parseNumber());
 						this->scenario_data.incrementFlag(myFlag.first, myFlag.second, amount);
 						break;
 					}
@@ -186,13 +187,13 @@ namespace hoffman::isaiah {
 						break;
 					case ScriptCommands::Add_To_Buffer:
 					{
-						auto value = this->parseNumber();
+						auto value = static_cast<std::int16_t>(this->parseNumber());
 						this->scenario_data.addToBuffer(value);
 						break;
 					}
 					case ScriptCommands::Test_Buffer:
 					{
-						auto value = this->parseNumber();
+						auto value = static_cast<std::int16_t>(this->parseNumber());
 						this->scenario_data.testBuffer(value);
 						break;
 					}
@@ -220,7 +221,7 @@ namespace hoffman::isaiah {
 						break;
 					case ScriptCommands::Change_Health:
 					{
-						auto amount = this->parseNumber();
+						auto amount = static_cast<std::int16_t>(this->parseNumber());
 						if (!this->scenario_data.changeHealth(amount)) {
 							end_script = true;
 						}
