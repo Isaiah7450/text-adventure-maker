@@ -215,6 +215,9 @@ namespace hoffman::isaiah {
 						end_script = true;
 						break;
 					}
+					case ScriptCommands::Store_Health:
+						this->scenario_data.storeHealth();
+						break;
 					case ScriptCommands::Change_Health:
 					{
 						auto amount = this->parseNumber();
@@ -235,6 +238,30 @@ namespace hoffman::isaiah {
 					}
 					case ScriptCommands::Pause:
 						this->scenario_data.pause();
+						break;
+					case ScriptCommands::Clear_String:
+						this->scenario_data.clearString();
+						break;
+					case ScriptCommands::Append_String:
+					{
+						const auto text_no = this->parseNumber();
+						this->scenario_data.appendString(text_no);
+						break;
+					}
+					case ScriptCommands::Append_String_Indirect:
+					{
+						const auto my_flag = this->parseFlag();
+						this->scenario_data.appendStringIndirect(my_flag.first, my_flag.second);
+						break;
+					}
+					case ScriptCommands::Append_Number:
+						this->scenario_data.appendNumber();
+						break;
+					case ScriptCommands::Append_Space:
+						this->scenario_data.appendSpace();
+						break;
+					case ScriptCommands::Display_String:
+						this->scenario_data.displayString();
 						break;
 					case ScriptCommands::State:
 						// Just skip over this command's one argument

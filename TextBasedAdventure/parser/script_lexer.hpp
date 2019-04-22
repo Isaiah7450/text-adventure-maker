@@ -49,7 +49,10 @@ namespace hoffman::isaiah {
 					{ScriptCommands::Test_Buffer, "Subtract_From_Buffer"}, {ScriptCommands::Jump_To_State, "Jump_To_State"},
 					{ScriptCommands::End_Scenario, "End_Scenario"}, {ScriptCommands::Change_Health, "Change_Health"},
 					{ScriptCommands::Kill_Player, "Kill_Player"}, {ScriptCommands::Get_Input, "Get_Input"},
-					{ScriptCommands::Pause, "Pause"}
+					{ScriptCommands::Pause, "Pause"}, {ScriptCommands::Store_Health, "Store_Health"},
+					{ScriptCommands::Clear_String, "Clear_String"}, {ScriptCommands::Append_String, "Append_String"},
+					{ScriptCommands::Append_String_Indirect, "Append_String_In_Flag"}, {ScriptCommands::Append_Number, "Append_Buffer"},
+					{ScriptCommands::Append_Space, "Append_Space"}, { ScriptCommands::Display_String, "Display_String" }
 				};
 				if (this->getCommandToken() != command) {
 					// This is a parsing error; the provided token is acceptable

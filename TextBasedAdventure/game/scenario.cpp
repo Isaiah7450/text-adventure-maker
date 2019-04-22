@@ -166,6 +166,10 @@ namespace hoffman::isaiah {
 			_getch();
 		}
 
+		void Scenario::storeHealth() noexcept {
+			this->number_buffer = this->player_health;
+		}
+
 		bool Scenario::changeHealth(int amt) noexcept {
 			if (amt > 0) {
 				std::cout << "You gained " << amt << " health.\n";
@@ -216,6 +220,35 @@ namespace hoffman::isaiah {
 
 		void Scenario::pause() noexcept {
 			_getch();
+		}
+
+		void Scenario::clearString() noexcept {
+			this->string_buffer = "";
+		}
+
+		void Scenario::appendString(int number) {
+			assert(number >= 0);
+			this->string_buffer += this->string_table[number];
+		}
+
+		void Scenario::appendStringIndirect(int x, int y) {
+			// Warning: unsafe without script validation!
+			assert(x >= 0 && x_get < Scenario::max_x_flag);
+			assert(y >= 0 && y_get < Scenario::max_y_flag);
+			assert(this->scen_flags[x][y] >= 0);
+			this->appendString(this->scen_flags[x][y]);
+		}
+
+		void Scenario::appendNumber() noexcept {
+			this->string_buffer += std::to_string(this->getBuffer());
+		}
+
+		void Scenario::appendSpace() noexcept {
+			this->string_buffer += " ";
+		}
+
+		void Scenario::displayString() const noexcept {
+			std::cout << this->string_buffer << "\n";
 		}
 
 		void Scenario::doDeathSequence() const noexcept {

@@ -45,6 +45,12 @@ namespace hoffman::isaiah {
 			{"Change_Health", ScriptCommands::Change_Health}, {"Kill_Player", ScriptCommands::Kill_Player},
 			{"Get_Input", ScriptCommands::Get_Input},
 			{"Pause", ScriptCommands::Pause}, {"Pause_Script", ScriptCommands::Pause},
+			{"Clear_String", ScriptCommands::Clear_String}, {"Append_String", ScriptCommands::Append_String},
+			{"Append_String_Indirect", ScriptCommands::Append_String_Indirect}, {"Append_String_In_Flag", ScriptCommands::Append_String_Indirect},
+			{"Append_Buffer", ScriptCommands::Append_Number}, {"Append_Number", ScriptCommands::Append_Number},
+			{"Append_Space", ScriptCommands::Append_Space},
+			{"Display_String", ScriptCommands::Display_String}, {"Display_String_Buffer", ScriptCommands::Display_String},
+			{"Store_Health", ScriptCommands::Store_Health},
 			{"End_Scenario", ScriptCommands::End_Scenario}
 		};
 

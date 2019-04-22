@@ -100,6 +100,8 @@ namespace hoffman::isaiah {
 			/// Zero indicates premature exit, one indicates success,
 			/// and two indicates failure.</param>
 			void endScenario(int status) noexcept;
+			/// <summary>Stores the player's health in the number buffer.</summary>
+			void storeHealth() noexcept;
 			/// <summary>Changes the health of the player.</summary>
 			/// <param name="amt">The amount by which to change the player's health.</param>
 			/// <returns>True if the player is still alive else false.</returns>
@@ -112,6 +114,22 @@ namespace hoffman::isaiah {
 			void getInput(int x, int y);
 			/// <summary>Pauses the scenario until the player provides an input.</summary>
 			void pause() noexcept;
+			/// <summary>Clears the string stored in the buffer currently.</summary>
+			void clearString() noexcept;
+			/// <summary>Appends a string to the end of the buffer.</summary>
+			/// <param name="number">The number associated with the string.</param>
+			void appendString(int number);
+			/// <summary>Appends a string to the end of the buffer based on the number stored in a flag.</summary>
+			/// <param name="x">The x-index of the flag that stores the number of the string to append.</param>
+			/// <param name="y">The y-index of the flag that stores the number of the string to append.</param>
+			void appendStringIndirect(int x, int y);
+			/// <summary>Appends the number in the number buffer to the end of the string buffer.</summary>
+			void appendNumber() noexcept;
+			/// <summary>Appends a space to the string buffer.</summary>
+			void appendSpace() noexcept;
+			/// <summary>Displays the current string in the string buffer. Note: You must manually clear the string buffer.
+			/// A newline is automatically attached at the end.</summary>
+			void displayString() const noexcept;
 			/// <summary>Checks if a string with the given number exist.</summary>
 			/// <param name="number">The number associated with the string.</param>
 			bool doesStringExist(int number) const noexcept {
@@ -140,6 +158,8 @@ namespace hoffman::isaiah {
 			std::map<int, std::string> string_table;
 			/// <summary>This variable represents the number buffer utilized by the scenario.</summary>
 			int number_buffer;
+			/// <summary>This variable represents the string buffer utilized by the scenario.</summary>
+			std::string string_buffer {};
 		};
 	}
 }
