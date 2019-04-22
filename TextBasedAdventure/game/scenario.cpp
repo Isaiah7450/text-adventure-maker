@@ -1,11 +1,12 @@
 // File Author: Isaiah Hoffman
 // File Created: January 2, 2017
-#include <cassert>
 #include <array>
-#include <string>
-#include <map>
-#include <iostream>
 #include <fstream>
+#include <iostream>
+#include <map>
+#include <memory>
+#include <string>
+#include <cassert>
 #include <conio.h>
 #include "./../game/scenario.hpp"
 #include "./../parser/script_globals.hpp"
@@ -17,7 +18,7 @@ namespace hoffman::isaiah {
 			scenario_name {scen_name},
 			player_name {p_name},
 			player_health {100},
-			scen_flags {},
+			scen_flags {std::make_unique<std::array<std::array<int, Scenario::max_y_flag>, Scenario::max_x_flag>>()},
 			string_table {},
 			number_buffer {0} {
 			this->loadStrings();
@@ -76,7 +77,7 @@ namespace hoffman::isaiah {
 			// Warning: unsafe without script validation!
 			assert(x >= 0 && x < Scenario::max_x_flag);
 			assert(y >= 0 && y < Scenario::max_y_flag);
-			this->scen_flags[x][y] = v;
+			(*this->scen_flags)[x][y] = v;
 		}
 
 		void Scenario::setFlagIndirect(int x_set, int y_set, int x_get, int y_get) {
@@ -85,28 +86,28 @@ namespace hoffman::isaiah {
 			assert(y_set >= 0 && y_set < Scenario::max_y_flag);
 			assert(x_get >= 0 && x_get < Scenario::max_x_flag);
 			assert(y_get >= 0 && y_get < Scenario::max_y_flag);
-			this->scen_flags[x_set][y_set] = this->scen_flags[x_get][y_get];
+			(*this->scen_flags)[x_set][y_set] = (*this->scen_flags)[x_get][y_get];
 		}
 
 		void Scenario::retrieveFlag(int x_set, int y_set) {
 			// Warning: unsafe without script validation!
 			assert(x_set >= 0 && x_set < Scenario::max_x_flag);
 			assert(y_set >= 0 && y_set < Scenario::max_y_flag);
-			this->scen_flags[x_set][y_set] = this->number_buffer;
+			(*this->scen_flags)[x_set][y_set] = this->number_buffer;
 		}
 
 		void Scenario::storeFlag(int x_get, int y_get) {
 			// Warning: unsafe without script validation!
 			assert(x_get >= 0 && x_get < Scenario::max_x_flag);
 			assert(y_get >= 0 && y_get < Scenario::max_y_flag);
-			this->number_buffer = this->scen_flags[x_get][y_get];
+			this->number_buffer = (*this->scen_flags)[x_get][y_get];
 		}
 
 		void Scenario::incrementFlag(int x, int y, int amt) {
 			// Warning: unsafe without script validation!
 			assert(x >= 0 && x < Scenario::max_x_flag);
 			assert(y >= 0 && y < Scenario::max_y_flag);
-			this->scen_flags[x][y] += amt;
+			(*this->scen_flags)[x][y] += amt;
 		}
 
 		void Scenario::addFlags(int x_set, int y_set, int x_get, int y_get) {
@@ -115,7 +116,7 @@ namespace hoffman::isaiah {
 			assert(y_set >= 0 && y_set < Scenario::max_y_flag);
 			assert(x_get >= 0 && x_get < Scenario::max_x_flag);
 			assert(y_get >= 0 && y_get < Scenario::max_y_flag);
-			this->scen_flags[x_set][y_set] += this->scen_flags[x_get][y_get];
+			(*this->scen_flags)[x_set][y_set] += (*this->scen_flags)[x_get][y_get];
 		}
 
 		void Scenario::subtractFlags(int x_set, int y_set, int x_get, int y_get) {
@@ -124,7 +125,7 @@ namespace hoffman::isaiah {
 			assert(y_set >= 0 && y_set < Scenario::max_y_flag);
 			assert(x_get >= 0 && x_get < Scenario::max_x_flag);
 			assert(y_get >= 0 && y_get < Scenario::max_y_flag);
-			this->scen_flags[x_set][y_set] -= this->scen_flags[x_get][y_get];
+			(*this->scen_flags)[x_set][y_set] -= (*this->scen_flags)[x_get][y_get];
 		}
 
 		void Scenario::testFlags(int x_a, int y_a, int x_b, int y_b) {
@@ -133,7 +134,7 @@ namespace hoffman::isaiah {
 			assert(y_a >= 0 && y_a < Scenario::max_y_flag);
 			assert(x_b >= 0 && x_b < Scenario::max_x_flag);
 			assert(y_b >= 0 && y_b < Scenario::max_y_flag);
-			this->number_buffer = this->scen_flags[x_a][y_a] - this->scen_flags[x_b][y_b];
+			this->number_buffer = (*this->scen_flags)[x_a][y_a] - (*this->scen_flags)[x_b][y_b];
 		}
 
 		bool Scenario::checkIfZero() const noexcept {
@@ -227,7 +228,7 @@ namespace hoffman::isaiah {
 					std::cout.flush();
 				}
 			} while (!validInput);
-			this->scen_flags[x][y] = userInput;
+			(*this->scen_flags)[x][y] = userInput;
 		}
 
 		void Scenario::pause() noexcept {
@@ -247,8 +248,8 @@ namespace hoffman::isaiah {
 			// Warning: unsafe without script validation!
 			assert(x >= 0 && x < Scenario::max_x_flag);
 			assert(y >= 0 && y < Scenario::max_y_flag);
-			assert(this->scen_flags[x][y] >= 0);
-			this->appendString(this->scen_flags[x][y]);
+			assert((*this->scen_flags[x][y]) >= 0);
+			this->appendString((*this->scen_flags)[x][y]);
 		}
 
 		void Scenario::appendNumber() noexcept {

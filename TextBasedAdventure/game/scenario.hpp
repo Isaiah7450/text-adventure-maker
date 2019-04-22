@@ -4,6 +4,7 @@
 // File Created: January 2, 2018
 #include <array>
 #include <map>
+#include <memory>
 #include <string>
 
 namespace hoffman::isaiah {
@@ -136,10 +137,10 @@ namespace hoffman::isaiah {
 				return this->string_table.find(number) != this->string_table.end();
 			}
 			// The maximum valid state number that can be used in a scenario.
-			static constexpr const size_t max_state_number = 99999U;
+			static constexpr const size_t max_state_number = 99'999U;
 			// The maximum valid x and y indices for the scenario's flags.
-			static constexpr const size_t max_x_flag = 400U;
-			static constexpr const size_t max_y_flag = 25U;
+			static constexpr const size_t max_x_flag = 100'000U;
+			static constexpr const size_t max_y_flag = 1'000U;
 		protected:
 			/// <summary>Loads the scenario's strings from the string file.</summary>
 			void loadStrings();
@@ -153,7 +154,7 @@ namespace hoffman::isaiah {
 			/// <summary>The variable represents the amount of health the player has remaining.</summary>
 			int player_health;
 			/// <summary>This variable is a two-dimensional array of flags that the scenario uses.</summary>
-			std::array<std::array<int, Scenario::max_y_flag>, Scenario::max_x_flag> scen_flags;
+			std::unique_ptr<std::array<std::array<int, Scenario::max_y_flag>, Scenario::max_x_flag>> scen_flags;
 			/// <summary>This variable maps the scenario's string numbers to the proper string used by the scenario.</summary>
 			std::map<int, std::string> string_table;
 			/// <summary>This variable represents the number buffer utilized by the scenario.</summary>
