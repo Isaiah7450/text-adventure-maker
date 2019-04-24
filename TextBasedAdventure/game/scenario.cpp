@@ -34,15 +34,15 @@ namespace hoffman::isaiah {
 			while (!reached_end) {
 				reached_end = !std::getline(myFile, buffer, ' ');
 				if (!reached_end) {
+					size_t substring_start = 0;
+					while (buffer.at(substring_start) == '\n' || buffer.at(substring_start) == '\r'
+						|| buffer.at(substring_start) == '\t' || buffer.at(substring_start) == ' ') {
+						++substring_start;
+					}
+					buffer = buffer.substr(substring_start);
 					if (buffer[0] != '\'') {
 						int str_no = 0;
 						try {
-							size_t substring_start = 0;
-							while (buffer.at(substring_start) == '\n' || buffer.at(substring_start) == '\r'
-								|| buffer.at(substring_start) == '\t' || buffer.at(substring_start) == ' ') {
-								++substring_start;
-							}
-							buffer = buffer.substr(substring_start);
 							str_no = std::stoi(buffer);
 							if (std::to_string(str_no) != buffer) {
 								throw std::string {"Invalid input."};
