@@ -1,5 +1,6 @@
 // File Author: Isaiah Hoffman
 // File Created: January 2, 2017
+#include <algorithm>
 #include <array>
 #include <fstream>
 #include <iostream>
@@ -10,61 +11,134 @@
 #include <cinttypes>
 #include <conio.h>
 #include "./../game/scenario.hpp"
+#include "./../game/datafile_reader.hpp"
 #include "./../parser/script_globals.hpp"
 using namespace std::literals::string_literals;
 
 namespace hoffman::isaiah {
 	namespace game {
 		Scenario::Scenario(std::string scen_name, std::string p_name) :
-			scenario_name {scen_name},
+			scenario_internal_name {scen_name},
 			player_name {p_name},
 			player_health {100},
 			scen_flags {std::make_unique<std::array<std::array<std::int16_t, Scenario::max_y_flag>, Scenario::max_x_flag>>()},
 			string_table {},
 			number_buffer {0} {
+			this->loadSettings();
 			this->loadStrings();
 		}
 
+		void Scenario::loadSettings() {
+			const auto file_name = "./scenarios/"s + this->scenario_internal_name + "/settings.txt"s;
+			std::ifstream my_file {file_name};
+			util::DataFileReader my_parser {my_file, file_name};
+			const int file_version = util::DataFileReader::readHeader(my_parser);
+			if (file_version == 1) {
+				my_parser.getNextToken();
+				my_parser.expectToken(util::DatafileTokenTypes::Section, "[metadata]");
+				my_parser.getNextToken();
+				my_parser.readKeyValuePair("name");
+				this->scenario_name = my_parser.parseString();
+				my_parser.getNextToken();
+				my_parser.readKeyValuePair("desc");
+				this->scenario_desc = my_parser.parseString();
+				my_parser.getNextToken();
+				my_parser.readKeyValuePair("author");
+				this->scenario_author = my_parser.parseString();
+				my_parser.getNextToken();
+				my_parser.readKeyValuePair("version");
+				this->scenario_update_version = my_parser.parseInteger();
+				my_parser.getNextToken();
+				my_parser.readKeyValuePair("languages");
+				my_parser.readList();
+				const auto my_langs = my_parser.parseList<std::string>();
+				for (const auto lang : my_langs) {
+					this->scenario_available_langs.emplace(lang);
+				}
+				// I should do this some other time or separate this into a separate function.
+				if (this->scenario_available_langs.size() == 1) {
+					this->scenario_lang = *this->scenario_available_langs.begin();
+				}
+				else if (this->scenario_available_langs.size() > 1) {
+					bool is_valid = false;
+					while (!is_valid) {
+						std::cout << "Select a language for the scenario:\n";
+						for (const auto lang : this->scenario_available_langs) {
+							std::cout << lang << "\n";
+						}
+						std::getline(std::cin, this->scenario_lang, '\n');
+						is_valid = std::binary_search(this->scenario_available_langs.cbegin(), this->scenario_available_langs.cend(),
+							this->scenario_lang);
+					}
+				}
+				my_parser.getNextToken();
+				my_parser.expectToken(util::DatafileTokenTypes::Section, "[settings]");
+				my_parser.getNextToken();
+				my_parser.readKeyValuePair("start_state");
+				this->starting_state = my_parser.parseInteger();
+			}
+			else {
+				throw std::runtime_error {"Invalid settings file version specified."};
+			}
+		}
+
 		void Scenario::loadStrings() {
-			auto fileName = "./scenarios/"s + this->scenario_name + "/strings.txt"s;
+			auto fileName = this->scenario_lang == "" ? "./scenarios/"s + this->scenario_internal_name + "/strings.txt"s
+				: "./scenarios/" + this->scenario_internal_name + "/"s + this->scenario_lang + "/strings.txt"s;
 			std::ifstream myFile {fileName};
+			std::string my_string_file_text = "";
+			my_string_file_text.reserve(5000);
 			std::string buffer {};
-			bool reached_end = myFile.fail() || myFile.bad();
+			while (std::getline(myFile, buffer, '\n')) {
+				my_string_file_text += buffer + '\n';
+			}
+			std::size_t current_loc = 0;
+			auto get_next_line_lambda = [my_string_file_text, &buffer, &current_loc]() {
+				buffer = "";
+				while (current_loc < my_string_file_text.size()) {
+					buffer += my_string_file_text.at(current_loc);
+					if (my_string_file_text.at(current_loc++) == '\n') {
+						buffer.pop_back();
+						return false;
+					}
+				}
+				return true;
+			};
+			auto normalize_line_string_lambda = [&buffer]() {
+				std::size_t substring_start = 0;
+				while (substring_start < buffer.size() && (buffer.at(substring_start) == '\t'
+					|| buffer.at(substring_start) == ' ')) {
+					++substring_start;
+				}
+				buffer = buffer.substr(substring_start);
+			};
+			bool reached_end = get_next_line_lambda();
 			int line_no = 1;
 			while (!reached_end) {
-				reached_end = !std::getline(myFile, buffer, ' ');
-				if (!reached_end) {
-					size_t substring_start = 0;
-					while (buffer.at(substring_start) == '\n' || buffer.at(substring_start) == '\r'
-						|| buffer.at(substring_start) == '\t' || buffer.at(substring_start) == ' ') {
-						++substring_start;
+				normalize_line_string_lambda();
+				if (buffer[0] != '\'' && buffer != "") {
+					int str_no = 0;
+					try {
+						str_no = std::stoi(buffer.substr(0, buffer.find_first_of(' ')));
 					}
-					buffer = buffer.substr(substring_start);
-					if (buffer[0] != '\'') {
-						int str_no = 0;
-						try {
-							str_no = std::stoi(buffer);
-							if (std::to_string(str_no) != buffer) {
-								throw std::string {"Invalid input."};
-							}
-						}
-						catch (...) {
-							throw parser::ScriptError {"Invalid string number: "s + buffer + "."s,
-								parser::ErrorSeverity::Error, fileName, line_no};
-						}
-						if (this->string_table.find(str_no) != this->string_table.end()) {
-							throw parser::ScriptError {"Duplicate string number: "s + buffer + "."s,
-								parser::ErrorSeverity::Error, fileName, line_no};
-						}
-						reached_end = !std::getline(myFile, buffer, '\n');
-						this->string_table.emplace(str_no, buffer);
+					catch (...) {
+						throw parser::ScriptError {"Invalid string number: "s + buffer + "."s,
+							parser::ErrorSeverity::Error, fileName, line_no};
+					}
+					if (this->string_table.find(str_no) != this->string_table.end()) {
+						throw parser::ScriptError {"Duplicate string number: "s + buffer + "."s,
+							parser::ErrorSeverity::Error, fileName, line_no};
+					}
+					// Special string number.
+					if (str_no == 0) {
+						this->scenario_name = buffer.substr(buffer.find_first_of(' ') + 1);
 					}
 					else {
-						reached_end = !std::getline(myFile, buffer, '\n');
-						continue;
+						this->string_table.emplace(str_no, buffer.substr(buffer.find_first_of(' ') + 1));
 					}
 				}
 				++line_no;
+				reached_end = get_next_line_lambda();
 			}
 		}
 

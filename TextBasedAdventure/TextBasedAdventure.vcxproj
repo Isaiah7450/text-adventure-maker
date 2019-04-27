@@ -105,12 +105,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="game\datafile_reader.cpp" />
     <ClCompile Include="game\scenario.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="parser\script_lexer.cpp" />
     <ClCompile Include="parser\script_parser.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="game\datafile_reader.hpp" />
     <ClInclude Include="game\scenario.hpp" />
     <ClInclude Include="parser\script_globals.hpp" />
     <ClInclude Include="parser\script_lexer.hpp" />

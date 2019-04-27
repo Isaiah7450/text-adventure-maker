@@ -43,25 +43,27 @@ namespace hoffman::isaiah {
 						this->lexer->getLineNumber()));
 				}
 			}
-			if (start_state == -1) {
-				// Reset scanner to beginning of file so that we can start parsing.
-				this->lexer->setLocation(0U, 1);
-			}
-			else {
-				this->checkStateExists(start_state);
-				auto start_loc = this->jumpTable.at(start_state);
-				// Set jump location to the provided start state.
-				this->lexer->setLocation(start_loc.first, start_loc.second);
-			}
-			this->parseScript();
+			this->lexer->setLocation(0U, 1);
+			this->parseScript(start_state);
 		}
 
-		void ScriptParser::parseScript() {
+		void ScriptParser::parseScript(int start_state) {
 			this->lexer->getNext();
 			this->lexer->scan();
 			this->lexer->skipComments();
 			this->lexer->matchCommand(ScriptCommands::Begin_Script);
 			bool end_script = false;
+			if (start_state == -1) {
+				this->checkStateExists(this->scenario_data.getStartingState());
+				const auto start_loc = this->jumpTable.at(this->scenario_data.getStartingState());
+				this->lexer->setLocation(start_loc.first, start_loc.second);
+			}
+			else {
+				this->checkStateExists(start_state);
+				const auto start_loc = this->jumpTable.at(start_state);
+				// Set jump location to the provided start state.
+				this->lexer->setLocation(start_loc.first, start_loc.second);
+			}
 			while (!this->lexer->getNext() && !end_script) {
 				this->lexer->scan();
 				this->lexer->skipComments();

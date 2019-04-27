@@ -27,6 +27,9 @@
     <ClCompile Include="game\scenario.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="game\datafile_reader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="parser\script_lexer.hpp">
@@ -39,6 +42,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="game\scenario.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game\datafile_reader.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

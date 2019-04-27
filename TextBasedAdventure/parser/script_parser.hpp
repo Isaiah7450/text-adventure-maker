@@ -32,7 +32,8 @@ namespace hoffman::isaiah {
 			void start(int start_state = -1);
 		protected:
 			/// <summary>Causes the parser to parse the script.</summary>
-			void parseScript();
+			/// <param name="start_state">The state to start at.</param>
+			void parseScript(int start_state);
 			/// <summary>Checks if the given state exists in the jump table, and throws an exception
 			/// if it does not.</summary>
 			/// <param name="state_no">The state number to look for.</param>

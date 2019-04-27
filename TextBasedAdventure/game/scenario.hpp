@@ -5,6 +5,7 @@
 #include <array>
 #include <map>
 #include <memory>
+#include <set>
 #include <string>
 #include <cinttypes>
 
@@ -16,6 +17,19 @@ namespace hoffman::isaiah {
 			/// <param name="scen_name">The name of the scenario.</param>
 			/// <param name="p_name">The name of the player.</param>
 			Scenario(std::string scen_name, std::string p_name);
+
+			/// <summary>Prints some basic information about the scenario.</summary>
+			void printScenarioInfo() const noexcept {
+				std::cout << "Welcome, " << this->player_name << ", to the scenario `" << this->scenario_name << "`.\n\n";
+				std::cout << "Description: " << this->scenario_desc << "\n";
+				std::cout << "Author: " << this->scenario_author
+					<< "\tVersion: " << this->scenario_update_version << "\n\n";
+			}
+
+			// Getters
+			int getStartingState() const noexcept {
+				return this->starting_state;
+			}
 
 			// Commands
 			// Warning: None of the parameters for commands are validated here.
@@ -143,13 +157,30 @@ namespace hoffman::isaiah {
 			static constexpr const size_t max_x_flag = 100'000U;
 			static constexpr const size_t max_y_flag = 1'000U;
 		protected:
+			/// <summary>Loads the scenario's metadata and settings.</summary>
+			void loadSettings();
 			/// <summary>Loads the scenario's strings from the string file.</summary>
 			void loadStrings();
 			/// <summary>Displays some texts when the player dies.</summary>
 			void doDeathSequence() const noexcept;
 		private:
+			/// <summary>This variable represents the scenario's internal name (used to resolve file references).</summary>
+			std::string scenario_internal_name;
 			/// <summary>This variable represents the scenario's name.</summary>
-			std::string scenario_name;
+			std::string scenario_name = "";
+			/// <summary>This variable represents the scenario's description.</summary>
+			std::string scenario_desc = "";
+			/// <summary>This variable represents the scenario's author.</summary>
+			std::string scenario_author = "";
+			/// <summary>This variable represents the scenario's version (as specified by the
+			/// scenario creator, not the script version).</summary>
+			int scenario_update_version = 1;
+			/// <summary>This variable represents the scenario's available languages.</summary>
+			std::set<std::string> scenario_available_langs {};
+			/// <summary>This variable represents the scenario's current language.</summary>
+			std::string scenario_lang = "";
+			/// <summary>This variable represents the scenario's starting state.</summary>
+			int starting_state = 0;
 			/// <summary>This variable represents the player's name.</summary>
 			std::string player_name;
 			/// <summary>The variable represents the amount of health the player has remaining.</summary>
