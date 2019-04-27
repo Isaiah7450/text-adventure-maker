@@ -112,8 +112,17 @@ namespace hoffman::isaiah {
 				}
 				else {
 					// Scan a non-number
-					while ((this->getLookahead() >= 'a' && this->getLookahead() <= 'z') ||
-						(this->getLookahead() >= 'A' && this->getLookahead() <= 'Z') || this->getLookahead() == '_') {
+					while ((this->getLookahead() >= 'a' && this->getLookahead() <= 'z')
+						|| (this->getLookahead() >= 'A' && this->getLookahead() <= 'Z')
+						|| (this->getLookahead() >= '0' && this->getLookahead() <= '9')
+						|| this->getLookahead() == '_' || this->getLookahead() == '-'
+						|| this->getLookahead() == '(' || this->getLookahead() == ')'
+						|| this->getLookahead() == '[' || this->getLookahead() == ']'
+						|| this->getLookahead() == '{' || this->getLookahead() == '}'
+						|| this->getLookahead() == '<' || this->getLookahead() == '>'
+						|| this->getLookahead() == '=' || this->getLookahead() == ','
+						|| this->getLookahead() == ';' || this->getLookahead() == '.'
+						|| this->getLookahead() == '"' || this->getLookahead() == '\'') {
 						this->token += *lookahead;
 						++lookahead;
 					}
@@ -185,6 +194,9 @@ namespace hoffman::isaiah {
 						if (command == ScriptCommands::End_Comment) {
 							// Break early if the comment was ended
 							in_comment = false;
+							// Get the next token and go ahead and scan it.
+							this->getNext();
+							this->scan();
 							break;
 						}
 						else if (command == ScriptCommands::Comment) {
@@ -208,9 +220,6 @@ namespace hoffman::isaiah {
 					throw ScriptLexicalError {"`Comment` command never closed with `End_Comment`.",
 						ErrorSeverity::Error, this->getFileName(), comment_start_line};
 				}
-				// Get the next token and go ahead and scan it.
-				this->getNext();
-				this->scan();
 			}
 		}
 
