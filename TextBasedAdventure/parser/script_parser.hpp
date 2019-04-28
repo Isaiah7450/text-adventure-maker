@@ -6,6 +6,7 @@
 #include <iosfwd>
 #include <memory>
 #include <map>
+#include <stack>
 #include <utility>
 #include "./../parser/script_globals.hpp"
 #include "./../game/scenario.hpp"
@@ -48,6 +49,10 @@ namespace hoffman::isaiah {
 		private:
 			/// <summary>The companion lexical scanner that the parser is using.</summary>
 			std::unique_ptr<ScriptLexer> lexer;
+			// The maximum number of calls that are allowed.
+			static constexpr const size_t max_call_depth = 1000;
+			/// <summary>Keeps track of previous call locations.</summary>
+			std::stack<std::pair<size_t, int>> state_stack {};
 			/// <summary>A mapping of state numbers to their location and line number in the script file.</summary>
 			std::map<int, std::pair<size_t, int>> jumpTable;
 			/// <summary>This variable is a reference to the scenario data.</summary>

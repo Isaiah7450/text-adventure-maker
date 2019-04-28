@@ -52,7 +52,8 @@ namespace hoffman::isaiah {
 					{ScriptCommands::Pause, "Pause"}, {ScriptCommands::Store_Health, "Store_Health"},
 					{ScriptCommands::Clear_String, "Clear_String"}, {ScriptCommands::Append_String, "Append_String"},
 					{ScriptCommands::Append_String_Indirect, "Append_String_In_Flag"}, {ScriptCommands::Append_Number, "Append_Buffer"},
-					{ScriptCommands::Append_Space, "Append_Space"}, { ScriptCommands::Display_String, "Display_String" }
+					{ScriptCommands::Append_Space, "Append_Space"}, {ScriptCommands::Display_String, "Display_String"},
+					{ScriptCommands::Call_State, "Call_State"}, {ScriptCommands::Return, "Return_From_Call"}
 				};
 				if (this->getCommandToken() != command) {
 					// This is a parsing error; the provided token is acceptable

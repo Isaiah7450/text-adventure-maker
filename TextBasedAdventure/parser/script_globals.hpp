@@ -21,7 +21,7 @@ namespace hoffman::isaiah {
 			Reset_Buffer, Add_To_Buffer, Test_Buffer, Jump_To_State,
 			End_Scenario, Store_Health, Change_Health, Kill_Player, Get_Input, Pause,
 			Clear_String, Append_String, Append_String_Indirect, Append_Number, Display_String,
-			Append_Space
+			Append_Space, Call_State, Return
 		};
 
 		// (Defined in script_lexer.cpp)

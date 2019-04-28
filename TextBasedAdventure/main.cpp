@@ -26,13 +26,13 @@ int main(int argc, const char* argv[]) {
 	std::getline(std::cin, yourName, '\n');
 	// Load scenario
 	try {
-		auto scen_data = ih::game::Scenario {argv[1], yourName};
-		scen_data.printScenarioInfo();
+		auto scen_data = std::make_unique<ih::game::Scenario>(argv[1], yourName);
+		scen_data->printScenarioInfo();
 		_getch();
 		auto scen_script_file_name = "./scenarios/"s + argv[1] + "/script.txt"s;
 		std::ifstream scen_script_file {scen_script_file_name};
-		auto scen_parser = ih::parser::ScriptParser {scen_script_file, scen_script_file_name, scen_data};
-		scen_parser.start();
+		auto scen_parser = std::make_unique<ih::parser::ScriptParser>(scen_script_file, scen_script_file_name, *scen_data);
+		scen_parser->start();
 	}
 	catch (const ih::parser::ScriptError& e) {
 		// Handle any errors that occurred

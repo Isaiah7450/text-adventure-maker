@@ -51,6 +51,8 @@ namespace hoffman::isaiah {
 			{"Append_Space", ScriptCommands::Append_Space},
 			{"Display_String", ScriptCommands::Display_String}, {"Display_String_Buffer", ScriptCommands::Display_String},
 			{"Store_Health", ScriptCommands::Store_Health},
+			{"Call_State", ScriptCommands::Call_State}, {"Return_From_Call", ScriptCommands::Return},
+			{"Return", ScriptCommands::Return},
 			{"End_Scenario", ScriptCommands::End_Scenario}
 		};
 

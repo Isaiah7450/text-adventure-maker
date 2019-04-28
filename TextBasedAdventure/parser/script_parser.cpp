@@ -266,6 +266,30 @@ namespace hoffman::isaiah {
 					case ScriptCommands::Display_String:
 						this->scenario_data.displayString();
 						break;
+					case ScriptCommands::Call_State:
+					{
+						const auto state_no = this->parseNumber();
+						this->checkStateExists(state_no);
+						if (this->state_stack.size() >= ScriptParser::max_call_depth) {
+							throw ScriptParseError {"Maximum call depth (" + std::to_string(ScriptParser::max_call_depth) + ") exceeded!",
+								parser::ErrorSeverity::Error, this->lexer->getFileName(), this->lexer->getLineNumber()};
+						}
+						this->state_stack.push(std::make_pair(this->lexer->getLocation(), this->lexer->getLineNumber()));
+						const auto jump_loc = this->jumpTable.at(state_no);
+						this->lexer->setLocation(jump_loc.first, jump_loc.second);
+						break;
+					}
+					case ScriptCommands::Return:
+					{
+						if (this->state_stack.size() == 0) {
+							throw ScriptParseError {"Cannot return from call: the call depth is zero.", parser::ErrorSeverity::Error,
+								this->lexer->getFileName(), this->lexer->getLineNumber()};
+						}
+						const auto jump_loc = this->state_stack.top();
+						this->state_stack.pop();
+						this->lexer->setLocation(jump_loc.first, jump_loc.second);
+						break;
+					}
 					case ScriptCommands::State:
 						// Just skip over this command's one argument
 						this->lexer->getNext();
