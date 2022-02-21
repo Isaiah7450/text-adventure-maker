@@ -1,7 +1,7 @@
 1. Begin_Script: Marks the beginning of a scenario script file.
  - While syntactic sugar, it is mandatory and must be the first
    token that the lexer and parser read.
-2
+
 2. End_Script : Marks the end of a scenario script file.
  - The lexer and parser may or may not ignore it; however,
    this should always be the last token the lexer and parser read.
