@@ -9,7 +9,7 @@
 #include <string>
 #include <cinttypes>
 
-namespace hoffman::isaiah {
+namespace hoffman_isaiah {
 	namespace game {
 		/// <summary>Class that represents a scenario.</summary> 
 		class Scenario {

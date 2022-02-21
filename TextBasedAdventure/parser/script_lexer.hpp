@@ -5,7 +5,7 @@
 #include <string>
 #include <iosfwd>
 #include "script_globals.hpp"
-namespace hoffman::isaiah {
+namespace hoffman_isaiah {
 	namespace parser {
 		/// <summary>Represents an object that performs lexical scanning and splits an input
 		/// string into individual tokens.</summary>

@@ -8,7 +8,7 @@
 #include "./game/scenario.hpp"
 #include "./parser/script_parser.hpp"
 using namespace std::literals::string_literals;
-namespace ih = hoffman::isaiah;
+namespace ih = hoffman_isaiah;
 
 int main(int argc, const char* argv[]) {
 	// Validate number of arguments

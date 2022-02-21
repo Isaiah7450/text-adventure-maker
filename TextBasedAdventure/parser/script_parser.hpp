@@ -11,7 +11,7 @@
 #include "./../parser/script_globals.hpp"
 #include "./../game/scenario.hpp"
 
-namespace hoffman::isaiah {
+namespace hoffman_isaiah {
 	namespace parser {
 		/// <summary>Represents an object that can validate and interpret a script.</summary>
 		class ScriptParser {

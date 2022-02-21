@@ -6,7 +6,7 @@
 #include <string>
 #include <utility>
 using namespace std::literals::string_literals;
-namespace hoffman::isaiah::util {
+namespace hoffman_isaiah::util {
 	DataFileReader::DataFileReader(std::istream& data_stream, std::string n) :
 		my_data {},
 		file_name {n},

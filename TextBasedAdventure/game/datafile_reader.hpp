@@ -9,7 +9,7 @@
 #include <utility>
 #include <vector>
 
-namespace hoffman::isaiah::errors {
+namespace hoffman_isaiah::errors {
 	class DatafileException : public std::runtime_error {
 	public:
 		// Note: The use of __FILE__, __func__, and __LINE__ are expected for the last three parameters.
@@ -79,7 +79,7 @@ namespace hoffman::isaiah::errors {
 	};
 }
 
-namespace hoffman::isaiah::util {
+namespace hoffman_isaiah::util {
 	// Note: I make the (probably unreasonable) assumption that every character used in the
 	// datafile fits a single 2-byte character. (I.e.: I don't consider the case for multibyte
 	// characters.) This is done to vastly simplify this program.

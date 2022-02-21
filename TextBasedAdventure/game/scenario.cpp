@@ -15,7 +15,7 @@
 #include "./../parser/script_globals.hpp"
 using namespace std::literals::string_literals;
 
-namespace hoffman::isaiah {
+namespace hoffman_isaiah {
 	namespace game {
 		Scenario::Scenario(std::string scen_name, std::string p_name) :
 			scenario_internal_name {scen_name},

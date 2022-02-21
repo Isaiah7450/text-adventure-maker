@@ -5,7 +5,7 @@
 #include <string>
 #include <map>
 #include <stdexcept>
-namespace hoffman::isaiah {
+namespace hoffman_isaiah {
 	namespace parser {
 		/// <summary>Represents the various types of tokens recognized by the lexical scanner.</summary>
 		enum class ScriptTokenTypes {

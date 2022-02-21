@@ -6,7 +6,7 @@
 #include "script_lexer.hpp"
 #include "script_globals.hpp"
 
-namespace hoffman::isaiah {
+namespace hoffman_isaiah {
 	namespace parser {
 		std::map<std::string, ScriptCommands> commandTable {
 			// These first two are dummy commands that will not actually be recognized.

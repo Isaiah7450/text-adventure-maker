@@ -13,7 +13,7 @@
 
 using namespace std::literals::string_literals;
 
-namespace hoffman::isaiah {
+namespace hoffman_isaiah {
 	namespace parser {
 		ScriptParser::ScriptParser(std::istream& script, std::string file, game::Scenario& scen_data) :
 			lexer {std::make_unique<ScriptLexer>(script, file)},
