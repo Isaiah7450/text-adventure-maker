@@ -1,0 +1,195 @@
+1. Begin_Script: Marks the beginning of a scenario script file.
+ - While syntactic sugar, it is mandatory and must be the first
+   token that the lexer and parser read.
+2
+2. End_Script : Marks the end of a scenario script file.
+ - The lexer and parser may or may not ignore it; however,
+   this should always be the last token the lexer and parser read.
+
+3. State {#} : Marks the start of a new state.
+ - {#} : The number of the state that is being defined.
+ - It is an error to define the same state number twice in a single script.
+ - Some states may be reserved for special purposes; if you use these states,
+   be prepared to deal with the consequences.
+
+4. Comment : Marks the beginning of a comment.
+ - Text inside comments are ignored until the end token is reached.
+
+5. End_Comment : Marks the end of a comment.
+
+6. Show_Text {#} : Displays a pre-defined string.
+ - {#} : The number of the string to load defined in the scenario's
+         strings file.
+ - If appropriate, strings will be looked up in the proper language
+   file. (This is dependent on the scenario's settings.)
+
+7. Set_Flag {X} {Y} {Value} : Sets a flag's value.
+ - {X} : The first index of the flag to set.
+ - {Y} : The second index of the flag to set.
+ - {Value} : The value to set the flag given by ({X}, {Y}) to.
+
+8. Copy_Flag {X_Set} {Y_Set} {X_Get} {Y_Get} : Sets a flag indirectly.
+ - {X_Set} : The first index of the flag to set.
+ - {Y_Set} : The second index of the flag to set.
+ - {X_Get} : The first index of the flag which stores the value to set
+             the flag given by ({X_Set}, {Y_Set}) to.
+ - {Y_Get} : The second index of the flag which stores the value to set
+             the flag given by ({X_Set}, {Y_Set}) to.
+
+9. Retrieve_Flag {X_Set} {Y_Set} : Sets a flag's value to the number buffer's value.
+ - {X_Set} : The first index of the flag to set.
+ - {Y_Set} : The second index of the flag to set.
+
+10. Store_Flag {X_Get} {Y_Get} : Stores a flag's value in the number buffer.
+ - {X_Get} : The first index of the flag to retrieve.
+ - {Y_Get} : The second index of the flag to retrieve.
+ - To use the value of a flag in comparisons, you must use this command.
+
+11. Change_Flag {X} {Y} {Amount} : Increases the value of a flag.
+ - {X} : The first index of the flag to change.
+ - {Y} : The second index of the flag to change.
+              ({X}, {Y}) by.
+ - {Amount} : The amount to change the value of the flag given by
+
+12. Add_Flags {X_Set} {Y_Set} {X_Get} {Y_Get} : Adds the value of two flags
+ - {X_Set} : The first index of the flag to store the result in.
+ - {Y_Set} : The second index of the flag to store the result in.
+ - {X_Get} : The first index of the other flag to add.
+ - {Y_Get} : The second index of the other flag to add.
+ - This command adds the values stored in the flags given by ({X_Set}, {Y_Set})
+   and ({X_Get}, {Y_Get}) and stores the result in the flag given
+   by ({X_Set}, {Y_Set}).
+
+13. Subtract_Flags {X_Set} {Y_Set} {X_Get} {Y_Get}
+ - {X_Set} : The first index of the flag to store the result in.
+ - {Y_Set} : The second index of the flag to store the result in.
+ - {X_Get} : The first index of the other flag to subtract.
+ - {Y_Get} : The second index of the other flag to subtract.
+ - This command subtracts the value stored in ({X_Get}, {Y_Get}) from the value stored
+   in ({X_Set}, {Y_Set}) and stores the result in ({X_Set}, {Y_Set}).
+
+14. Test_Flags {X_A} {Y_A} {X_B} {Y_B} : Tests if two flags are equal and stores the result
+                                         in the number buffer.
+ - {X_A} : The first index of the first flag.
+ - {Y_A} : The second index of the first flag.
+ - {X_B} : The first index of the second flag.
+ - {Y_B} : The second index of the second flag.
+ - This command subtracts the value of the flag defined by ({X_B}, {Y_B}) from the
+   value of the flag defined by ({X_A}, {Y_A}) and stores the difference in the number
+   buffer.
+
+15. Jump_If_Zero {#} : Causes the script to jump if the number buffer equals zero.
+ - {#} : The state to jump to if the number buffer equals zero.
+
+16. Jump_If_Not_Zero {#} : Causes the script to jump if the number buffer does not equal zero.
+ - {#} : The state to jump to if the number buffer does not equal zero.
+
+17. Jump_If_Positive {#} : Causes the script to jump if the number buffer is positive.
+ - {#} : The state to jump to if the number buffer is positive.
+
+18. Jump_If_Negative {#} : Causes the script to jump if the number buffer is negative.
+ - {#} : The state to jump to if the number buffer is negative.
+
+19. Jump_On_Buffer {Min_State} {Max_State} : Causes the script to jump to one of
+                                             many states based on the number buffer's value.
+ - {Min_State} : The minimum state number that the script will consider a valid jump site.
+ - {Max_State} : The maximum state number that the script will consider a valid jump site.
+ - If the number buffer's value is outside the range of [{Min_State}, {Max_State}] no
+   jump will occur, and the line after this command will be executed.
+
+19. Jump_To_State {#} : Unconditionally jumps to the given state number.
+ - {#} : The state to jump to.
+ - While not required, it is recommended to end every state with either an End_Scenario
+   or a Jump_To_State command. Otherwise, execution will simply fall-through to the next
+   command.
+
+20. Reset_Buffer : Resets the number buffer's value to zero.
+
+21. Add_To_Buffer {Value} : Adds the given value to the number buffer.
+ - {Value} : The number to add to the current contents of the number buffer.
+
+22. Test_Buffer {Value} : Subtracts the given value from the number buffer.
+ - {Value} : The number to subtract from the current contents of the number buffer.
+
+23. End_Scenario {Status} : Ends the scenario.
+ - {Status} : Zero indicates the player ended the scenario prematurely, one indicates
+              that the player won the scenario, and two indicates that the player lost
+			  scenario in a way other than death.
+
+24. Change_Health {Amount} : Changes the health of the player.
+ - {Amount} : The amount to change the player's health by.
+
+25. Kill_Player : Kills the player.
+
+26. Get_Input {X} {Y} : Stops the script and pauses for user input.
+ - {X} : The first index of the flag to set
+ - {Y} : The second index of the flag to set
+ - This command stops the script and prompts the user for a numerical input.
+   The flag given by ({X}, {Y}) receives the value input by the user.
+
+27. Pause : Stops the script and pauses for user input.
+ - Unlike the previous command, whatever value that is given by the player
+   is simply discarded. Use it after a long sequence of text.
+
+28. Clear_String : Clears the string buffer.
+
+29. Append_String {#}: Appends the given string to the string buffer.
+ - {#} : The number of the string to append to the buffer.
+
+30. Append_String_In_Flag {X} {Y} : Appends the string referenced by the given
+                                    flag to the string buffer.
+ - {X} : The first index of the flag that stores the referenced string.
+ - {Y} : The second index of the flag that stores the referenced string.
+ - To clarify, this command works by looking up the value of the flag located
+       at {{X}, {Y}}. It then looks up the string in the scenario's string
+       table that corresponds to the flag's value.
+
+31. Append_Number : Appends the value stored in the number buffer to the
+                    string buffer.
+
+32. Append_Space : Appends a space to the end of the string buffer.
+
+33. Display_String : Outputs the contents of the string buffer to the screen.
+ - Like Show_Text, this command also adds a newline at the end.
+ - The string buffer is not cleared after this command.
+
+34. Store_Health : Stores the player's health in the number buffer.
+
+35. Call_State {#} : Jumps to the given state and executes commands until
+                     a Return_From_Call command is reached.
+ - {#} : The state to call.
+
+36. Return_From_State : Returns back to the original call site after
+                        an original Call_State command.
+
+===RESOURCE LIMITS===
+
+Note that while commas are used here for clarity, it is syntactically wrong
+to include commas in your code to separate numbers.
+
+Maximum Flag X-Index:  99,999
+Maximum Flag Y-Index:     999
+  Minimum Flag Value: -32,768 (Same for number buffer and player health.)
+  Maximum Flag Value:  32,767 (Same for number buffer and player health.)
+Maximum State Number:  99,999
+
+===settings.txt===
+
+This file specifies some settings for the scenario as well as metadata.
+Read the comments in the file for the test scenario to see how it works.
+
+===strings.txt===
+
+This file stores most of the text for the scenario. Every language needs
+one of these.
+
+For each line, you must specify a number for the string and the string itself.
+Negative numbers are allowed, but are highly discouraged as they may be
+repurposed in the future.
+
+Any line that starts with a single quote (`'`) is a comment and is ignored
+by the parser.
+
+List of reserved/special string numbers:
+
+0 ==> Scenario Name (Allows one to localize the scenario's name.)

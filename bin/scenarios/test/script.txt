@@ -1,0 +1,109 @@
+Begin_Script
+	State 0
+		Comment
+			This text should be ignored by the parser.
+			The script also begins in this state.
+		End_Comment
+		Show_Text 8
+		Show_Text 16
+		Set_Flag 0 0 1
+		Set_Flag 0 1 1
+		Test_Flags 0 0 0 1
+		Jump_On_Zero 1
+		Jump_To_State 98
+	State 1
+		Show_Text 9
+		Reset_Buffer
+		Increment_Flag 0 0 1
+		Set_Flag_Indirect 0 2 0 1
+		Test_Flags 0 2 0 0
+		Jump_On_Negative 2
+		Jump_To_State 98
+	State 2
+		Show_Text 10
+		Show_Text 2
+		Set_Flag 1 0 99
+		Get_Input 0 0
+		Store_Flag 0 0
+		Jump_On_Buffer 0 9
+		Jump_On_Buffer 98 99
+		Show_Text 3
+		Jump_To_State 99
+	State 3
+		Show_Text 4
+		Jump_To_State 99
+	State 4
+		Show_Text 5
+		Jump_To_State 99
+	State 5
+		Show_Text 12
+		Jump_To_State 3
+	State 6
+		Show_Text 13
+		Clear_String
+		Append_String 200
+		Append_Space
+		Append_String 201
+		Append_Space
+		Append_String 202
+		Append_Space
+		Set_Flag 6 0 203
+		Append_String_In_Flag 6 0
+		Display_String
+		Jump_To_State 99
+	State 7
+		Show_Text 14
+		Clear_String
+		Append_String 113
+		Append_Space
+		Store_Health
+		Append_Number
+		Append_Space
+		Append_String 114
+		Display_String
+		Change_Health -5
+		Clear_String
+		Append_String 113
+		Append_Space
+		Store_Health
+		Append_Number
+		Append_Space
+		Append_String 114
+		Display_String
+		Jump_To_State 99
+	State 8
+		Show_Text 15
+		Clear_String
+		Append_String 210
+		Append_Space
+		Append_Number
+		Append_String 211
+		Display_String
+		Jump_To_State 99
+	State 9
+		Show_Text 17
+		Call_State 101
+		Show_Text 21
+		Jump_To_State 99
+	State 98
+		Show_Text 6
+		Store_Flag 1 0
+		Test_Buffer 99
+		Jump_On_Zero 99
+		End_Scenario 2
+	State 99
+		Show_Text 7
+		Show_Text 1
+		End_Scenario 1
+	State 100
+		Show_Text 11
+		End_Scenario 2
+	State 101
+		Show_Text 18
+		Call_State 102
+		Show_Text 20
+		Return_From_Call
+	State 102
+		Show_Text 19
+		Return_From_Call
+End_Script

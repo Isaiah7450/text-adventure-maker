@@ -1,0 +1,41 @@
+ ' Starting state: choose an example to run.
+1 Choose an example to run:
+2 1 => Multiplying a flag by a constant.
+3 2 => Multiplying a flag by another flag.
+4 3 => Conditional statements.
+5 4 => Adding a flag to the number buffer.
+6 5 => For loops.
+
+' State 200: Multiplying a flag by a constant.
+2001 This example multiplies 3 (stored in (0, 0)) by 5.
+2002 The answer is:
+
+' State 201: Multiplying two flags together.
+2011 This example multiplies 3 (stored in (0, 0)) by 5 (stored in (0, 1)).
+2012 The answer is:
+
+' State 204: Conditional statements.
+2041 This example demonstrates conditional statements.
+2042 First condition: Does 5 (in (0, 0)) equal 5 (in (0, 1))?
+2043 Yes.
+2044 No.
+2045 Invalid result: the script's logic is wrong.
+2051 Second condition: Does 5 (in (0, 0)) not equal 2 (in (0, 1))?
+2061 Third condition: Is 5 (in (0, 0)) less than 2 (in (0, 1))?
+2071 Fourth condition: Is 2 (in (0, 1)) greater than 5 (in (0, 0))?
+2081 Fifth condition: Is 1 (in (0, 0)) true, and is 5 (in (0, 1)) equal to 3?
+2091 Sixth condition: Is 0 (in (0, 0)) true, or is 5 (in (0, 1)) true?
+
+' State 212: Add flag to number buffer.
+2121 This example adds 5 (in (0, 0)) to 3 (in the number buffer).
+2122 The answer is:
+
+' State 213: Implementing for loops.
+2131 This example adds the first five integers (1, 2, 3, 4, and 5).
+2132 The answer is:
+
+' State 990: Exit/Start over prompt.
+9901 Example complete!
+9902 1 => Run another example.
+9903 2 => Exit program.
+

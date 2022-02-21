@@ -1,0 +1,199 @@
+Begin_Script
+	State 1
+		Comment Note that explanations/comments for these examples
+		        can be found in examples_of_command_sequences.txt. End_Comment
+		Show_Text 1
+		Set_Flag 0 0 2
+	State 2
+		Comment Displays the available examples.
+				(This is also a good example of a for loop.) End_Comment
+		Store_Flag 0 0
+		Test_Buffer 6
+		Jump_If_Positive 3
+		Clear_String
+		Append_String_In_Flag 0 0
+		Display_String
+		Change_Flag 0 0 1
+		Jump_To_State 2
+	State 3
+		Get_Input 0 1
+		Rem Some of these examples contain multiple states, so I have
+		    to do an extended if...else... chain. End_Rem
+		Store_Flag 0 1
+		Test_Buffer 1
+		Jump_If_Zero 200
+		Store_Flag 0 1
+		Test_Buffer 2
+		Jump_If_Zero 201
+		Store_Flag 0 1
+		Test_Buffer 3
+		Jump_If_Zero 204
+		Store_Flag 0 1
+		Test_Buffer 4
+		Jump_If_Zero 212
+		Store_Flag 0 1
+		Test_Buffer 5
+		Jump_If_Zero 213
+		Jump_To_State 1
+	State 200
+		Comment Multiply by constant example. End_Comment
+		Show_Text 2001
+		Set_Flag 0 0 3
+		Copy_Flag 0 1 0 0
+		Add_Flags 0 0 0 1
+		Add_Flags 0 0 0 1
+		Add_Flags 0 0 0 1
+		Add_Flags 0 0 0 1
+		Clear_String
+		Append_String 2002
+		Append_Space
+		Store_Flag 0 0
+		Append_Number
+		Display_String
+		Test_Buffer 15
+		Jump_If_Not_Zero 998
+		Jump_To_State 990
+	State 201
+		Comment Multiply flags together. End_Comment
+		Show_Text 2011
+		Set_Flag 0 0 3
+		Set_Flag 0 1 5
+		Copy_Flag 0 3 0 0
+		Set_Flag 0 2 1
+		Jump_To_State 202
+	State 202
+		Add_Flags 0 0 0 3
+		Change_Flag 0 2 1
+		Test_Flags 0 1 0 2
+		Jump_If_Not_Zero 202
+		Jump_If_Zero 203
+	State 203
+		Clear_String
+		Append_String 2012
+		Append_Space
+		Store_Flag 0 0
+		Append_Number
+		Display_String
+		Test_Buffer 15
+		Jump_If_Not_Zero 998
+		Jump_To_State 990
+	State 204
+		Comment Conditional statements. End_Comment
+		Show_Text 2041
+		Show_Text 2042
+		Set_Flag 0 0 5
+		Set_Flag 0 1 5
+		Test_Flags 0 0 0 1
+		Jump_If_Zero 205
+		Jump_To_State 211
+	State 205
+		Show_Text 2043
+		Pause
+		Show_Text 2051
+		Set_Flag 0 0 5
+		Set_Flag 0 1 2
+		Test_Flags 0 0 0 1
+		Jump_If_Not_Zero 206
+		Jump_To_State 211
+	State 206
+		Show_Text 2043
+		Pause
+		Show_Text 2061
+		Test_Flags 0 0 0 1
+		Jump_If_Negative 211
+		Jump_To_State 207
+	State 207
+		Show_Text 2044
+		Pause
+		Show_Text 2071
+		Test_Flags 0 1 0 0
+		Jump_If_Positive 211
+		Jump_To_State 208
+	State 208
+		Show_Text 2044
+		Pause
+		Set_Flag 0 0 1
+		Set_Flag 0 1 5
+		Show_Text 2081
+		Store_Flag 0 0
+		Test_Buffer 0
+		Jump_If_Zero 211
+		Store_Flag 0 1
+		Test_Buffer 3
+		Jump_If_Zero 211
+		Jump_To_State 209
+	State 209
+		Show_Text 2044
+		Pause
+		Show_Text 2091
+		Set_Flag 0 0 0
+		Set_Flag 0 1 5
+		Store_Flag 0 0
+		Test_Buffer 0
+		Jump_On_Not_Zero 210
+		Store_Flag 0 1
+		Test_Buffer 0
+		Jump_On_Not_Zero 210
+		Jump_To_State 211
+	State 210
+		Show_Text 2043
+		Jump_To_State 990
+	State 211
+		Show_Text 2045
+		Jump_To_State 998
+	State 212
+		Comment Add flag to buffer. End_Comment
+		Show_Text 2121
+		Set_Flag 0 0 3
+		Store_Flag 0 0
+		Set_Flag 0 0 5
+		Retrieve_Flag 0 1
+		Add_Flags 0 1 0 0
+		Store_Flag 0 1
+		Clear_String
+		Append_String 2122
+		Append_Space
+		Append_Number
+		Display_String
+		Test_Buffer 8
+		Jump_If_Not_Zero 998
+		Jump_To_State 990
+	State 213
+		Comment Implmenting for loops. End_Comment
+		Show_Text 2131
+		Set_Flag 0 1 0
+		Set_Flag 0 0 1
+	State 214
+		Store_Flag 0 0
+		Test_Buffer 5
+		Jump_If_Positive 215
+		Add_Flags 0 1 0 0
+		Change_Flag 0 0 1
+		Jump_To_State 214
+	State 215
+		Clear_String
+		Append_String 2132
+		Append_Space
+		Store_Flag 0 1
+		Append_Number
+		Display_String
+		Test_Buffer 15
+		Jump_If_Not_Zero 998
+		Jump_To_State 990
+	State 990
+		Show_Text 9901
+		Show_Text 9902
+		Show_Text 9903
+		Get_Input 0 0
+		Store_Flag 0 0
+		Test_Buffer 1
+		Jump_If_Zero 1
+		Store_Flag 0 0
+		Test_Buffer 2
+		Jump_If_Zero 999
+	State 998
+		End_Scenario 2
+	State 999
+		End_Scenario 1
+End_Script
+

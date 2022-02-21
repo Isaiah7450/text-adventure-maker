@@ -1,0 +1,57 @@
+' Scenario name.
+0 Cave of Wonder
+' State -1: Testing-related code.
+-1 Jump to which state?
+' State 0: Introductory text.
+1 Welcome to the Cave of Wonder. Treasure awaits the curious explorer, but beware of the traps and monsters that lurk inside.
+2 You are near the entrance to the cave. You could, if you wish, turn back and explore another day. That would be the wiser choice. But if you are brave and curious, you could go further into the cave.
+3 1 => Return home.
+4 2 => Proceed further into the cave.
+
+' State 1: Go home before entering.
+11 You decide that today is not the best day to go exploring. You leave the cave and its mysteries behind.
+
+' State 2: From state 0; going further into the cave.
+21 You proceed carefully through the cave until the path splits into two paths. One of the paths appears to be a long, narrow path that constantly twists and turns around the interior of the cave. The other path is much wider, but you think you can hear the scuttling of creatures that way.
+22 1 => Go down the narrow path.
+23 2 => Go down the wide path.
+
+' State 3 and 4: From state 2 or possibly state 4; narrow path.
+41 You decide to go down the narrow path. You follow the path for some time until your feet begin to ache. You could stop and rest for a moment or you could continue onward.
+42 1 => Rest for a moment.
+43 2 => Continue walking.
+
+' State 5: From state 2; wide path.
+51 You decide to go down the wide path. It does not take long for you to figure out where that scuttling sound came from; right in front of you is a gigantic poisonous spider! It has not noticed you yet, but it might as you get closer.
+52 You have a few options. You could try to sneak around the spider in the hopes it will not notice you. You could smash the spider with the hammer you carry on your toolbelt. Finally, if neither of those options are attractive, you could turn around and go down the other path.
+53 1 => Try to sneak around the spider.
+54 2 => Try to destroy the spider.
+55 3 => Go back the way you came and head down the other path.
+' Decided to go back and go down the other path.
+56 You decide to avoid the spider completely by backtracking and going down the other path.
+
+' State 6: From state 3; rest for a short moment.
+61 You take a moment to rest so that you will be at full strength for whatever lies ahead.
+62 After a few minutes, you feel refreshed and continue onward.
+
+' State 7: From state 3; continue walking.
+71 Though your feet are aching, you decide to soldier on. After all, the pain will go away after a good rest once you have finished exploring the cave.
+
+' State 8: From states 6, 7, 11, or 12.
+81 The path begins to widen and you find yourself in a large room.
+
+' State 9: From state 5; sneak around spider.
+91 You creep carefully past the spider.
+92 The spider does not notice you and leaves you alone.
+
+' State 10: From state 5; destroy the spider.
+101 You remove your hammer from your toolbelt. You begin to prepare to smash the spider.
+102 Unfortunately, the spider notices you. It sinks its venomous fangs into your skin before you are able to dispatch it.
+103 Though you will survive, the bite is very painful and leaves you feeling weary.
+
+' State 11: From state 9 or state 10.
+111 You continue walking deeper into the cave. The path begins to narrow and turns sharply.
+
+' State 12: From state 11 if the player killed the spider earlier.
+121 Rather than subsiding, the pain in your arm is growing substantially. You can barely force yourself to continue walking. You decide to take a short break.
+122 Eventually, you begin walking again.

@@ -1,0 +1,12 @@
+[global]
+version = 1
+
+[metadata]
+name = "Scripting Examples"
+desc = "Demonstrates examples of more complex command sequences."
+author = "Isaiah Hoffman"
+version = 1
+languages = <"English">
+
+[settings]
+start_state = 1

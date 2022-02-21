@@ -1,0 +1,34 @@
+# Test Scenario Settings File
+# Any line that starts with a # is a comment and is ignored by the parser.
+
+# Things in square brackets are section headers. The global section specifies
+# metadata about the settings file.
+[global]
+# The version of this file. This should be kept at 1 for now.
+version = 1
+
+# This section specifies some metadata for the scenario.
+[metadata]
+# The scenario's name. (Note: There is a way to provide a language-specific
+# version of this string in the individual string files.)
+name = "Test Adventure"
+# The scenario's description.
+desc = "An adventure used to test various aspects of the game and its script parser."
+# Who wrote the scenario?
+author = "Isaiah Hoffman"
+# The scenario version. (As in, if you update the scenario, you should change
+# this number.)
+version = 2
+# Using two here for testing purposes.
+# This line is very important. It lists the valid translations of the scenario.
+# For each language listed here in double quotes, you must have a subfolder
+# with that name in the scenario's directory. It must contain a single
+# file called strings.txt that gives the language-specific strings for the
+# scenario.
+languages = <"english", "test">
+
+# The settings section controls how the scenario is executed.
+[settings]
+# The state to start the scenario at in the scenario's script file.
+start_state = 0
+

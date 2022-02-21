@@ -1,0 +1,276 @@
+Examples
+----------------------------------------
+These examples serve to show you of how to do some things in scenarios. They
+range from simple to advanced. Note that almost all of these examples are code
+fragments; most of these must be placed in the proper place within a script
+(inside a script's state). (If the example contains a state command, then
+it might be able to stand alone.)
+
+If you want to easily reuse these commands, you can place them in a unique
+set of states and add a Return_From_Call at the end. Then, you can just call
+these states. (Some alterations may be needed.)
+
+Multiplying a flag by a constant number
+----------------------------------------
+	Comment
+		There are no direct commands to multiply a flag (or the number buffer)
+		by a constant value; however, one can easily simulate it through
+		repeated addition.
+
+		Here, I show you how to multiply the flag (0, 0) by 5. Another example
+		will show you how to multiply two flags together. Note that it uses
+		an additional flag (0, 1) to help.
+	End_Comment
+	Copy_Flag 0 1 0 0
+	Add_Flags 0 0 0 1
+	Add_Flags 0 0 0 1
+	Add_Flags 0 0 0 1
+	Add_Flags 0 0 0 1
+	Comment Note that Add_Flags is called one time less than the number you
+		are multiplying by. End_Comment
+
+Multiplying a flag by another flag
+----------------------------------------
+Begin_Script
+	Comment
+		A previous example showed you how to multiply a flag by a constant.
+		This example expands on that by showing you how to multiply a flag
+		by another flag.
+
+		The two flags being multiplied here are the flags (0, 0) and
+		(0, 1). An additional flag (0, 2) is used as a counter. The flag
+		(0, 3) is used to perform the multiplication. This is a
+		full code example; it can be used by itself.
+	End_Comment
+State 1
+	Comment Do initialization stuff here. End_Comment
+	Copy_Flag 0 3 0 0
+	Set_Flag 0 2 1
+	Jump_To_State 2
+State 2
+	Add_Flags 0 0 0 3
+	Increment_Flag 0 2 1
+	Test_Flags 0 1 0 2
+	Jump_If_Not_Zero 2
+	Jump_To_State 3
+State 3
+	Comment
+		At this point, the flag (0, 0) stores the result of multiplying the
+		flag (0, 0) by the flag (0, 1). In this state, we simply clean up.
+	End_Comment
+	Set_Flag 0 2 0
+	End_Scenario 1
+End_Script
+
+Conditional Statements
+----------------------------------------
+Begin_Script
+	Comment
+		The following example shows you how to write conditional
+		statements.* You should pay attention closely as you will likely
+		use a variant of this example a lot. The code comments should help
+		you understand how this works.
+
+		(* - Not sure what a conditional statement is? A conditional
+		statement can be described as a fork in a road where the program
+		has to decide which path to take. To do that, it has to evaluate
+		a condition.)
+	End_Comment
+State 1
+	Comment First, one has to have a flag that one wants to test. End_Comment
+	Set_Flag 0 0 5
+	Set_Flag 0 1 5
+	Comment The following three commands means 'If the flag (0, 0) equals
+		the flag (0, 1), jump to state 2; otherwise, jump to state 99.'
+		In this case, since both flags are equal, the script will continue
+		execution at state 2. End_Comment
+	Test_Flags 0 0 0 1
+	Jump_If_Zero 2
+	Jump_To_State 99
+State 2
+	Set_Flag 0 0 5
+	Set_Flag 0 1 2
+	Comment The following three commands mean 'If the flag (0, 0) is not
+		equal to the flag (0, 1), jump to state 3; otherwise, jump to state
+		99.' Since the flag (0, 0) is not equal to the flag (0, 1), the
+		script will continue execution at state 3. End_Comment
+	Test_Flags 0 0 0 1
+	Jump_If_Not_Zero 3
+	Jump_To_State 99
+State 3
+	Comment The following three commands mean 'If the flag (0, 0) is less
+		than the flag (0, 1), jump to state 99; otherwise, jump to state
+		4.' Note that the values of flags (as well as the number buffer)
+		are kept between states. Thus, the script will continue execution
+		at state 4. End_Comment
+	Test_Flags 0 0 0 1
+	Comment Another way to write this would be `JLT 99` which stands for
+		'Jump Less Than' meaning to jump to state 99 if the first flag is
+		less than the second flag. End_Comment
+	Jump_If_Negative 99
+	Jump_To_State 4
+State 4
+	Comment The following three commands mean 'If the flag (0, 1) is greater
+		than the flag (0, 0), jump to state 99; otherwise, jump to state 5.
+		The script will continue execution at state 5. End_Comment
+	Test_Flags 0 1 0 0
+	Jump_If_Positive 99
+	Jump_To_State 5
+State 5
+	Comment Here are two more example that demonstrates compound
+		conditions. These are a bit more advanced than the last few.
+	End_Comment
+	Comment This first example demonstrates the behavior of logical AND
+		as implemented in most programming and scripting languages. Logical
+		AND combines two conditions by only being true if both subconditions
+		are true.
+	End_Comment
+	Comment These first few commands tests the first condition. One can
+		interpret the sequence as meaning 'If the flag (0, 0) is false, jump
+		to state 99.' Note that the word 'false' refers solely to the value
+		0. The word 'true' would refer to any value that is not false; in
+		other words, any value that is not equal to zero is considered to be
+		'true'. End_Comment
+	Set_Flag 0 0 1
+	Set_Flag 0 1 5
+	Store_Flag 0 0
+	Test_Buffer 0
+	Comment Note that when using logical AND, if either subcondition is false,
+		the entire condition is false. End_Comment
+	Jump_On_Zero 99
+	Comment The following commands tests the second condition. One can
+		interpret this as 'If the flag (0, 1) equals 3, jump to state 99;
+		otherwise, jump to state 6.' End_Comment
+	Store_Flag 0 1
+	Test_Buffer 3
+	Jump_On_Zero 99
+	Jump_To_State 6
+State 6
+	Comment One can only end up at this state if both conditions in state 5
+		were true: the flag (0, 0) is a truth value, AND the flag (0, 1) is
+		not equal to 3. End_Comment
+	Comment This example demonstrates the behavior of logical
+		OR. Logical OR combines two conditions by being true if either
+		subcondition is true. End_Comment
+	Comment These first few commands test the first condition: 'If the flag
+		(0, 0) is true, jump to state 7.' End_Comment
+	Set_Flag 0 0 0
+	Set_Flag 0 1 5
+	Store_Flag 0 0
+	Test_Buffer 0
+	Jump_On_Not_Zero 7
+	Comment The following commands test the second condition: 'If the flag
+		(0, 1) is true, jump to state 7; otherwise, jump to state 99.'
+	End_Comment
+	Store_Flag 0 1
+	Test_Buffer 0
+	Jump_On_Not_Zero 7
+	Jump_To_State 99
+State 7
+	Comment One can end up at this state from state 6 if either condition in
+		state 6 was true: the flag (0, 0) is true, OR the flag (0, 1) is
+		true. End_Comment
+	Comment If everything was written correctly, one should end up at this
+		state. End_Comment
+	End_Scenario 1
+	Comment
+		Some additional notes about conditional statements (you may want to
+		skip this if you are just starting out):
+		1) There is nothing special about the commands `Test_Flags` and
+		`Test_Buffer` that make the conditional jump statements work; the
+		value that the conditional jump statements test is the current
+		number buffer. Indeed, `Test_Buffer 0` does absolutely nothing.
+		2) The two example compound conditions given above both used something
+		called 'short-circuiting' (or something like that). This means that
+		the script only checks as many conditions as necessary to determine
+		whether the entire condition is true or false. While this is generally
+		desired for speed reasons, one should be careful if either condition
+		has a side effect (such as setting a flag) because those side effects
+		may be jumped over by the script.
+		3) I did not give an example here for exclusive OR (henceforth XOR)
+		which returns true if ONLY one condition is true. The easiest way
+		to do XOR would be to invert one of the conditions and take the
+		logical AND of the two conditions.
+State 99
+	Comment The script should never reach this state if you wrote the
+		conditional statement correctly. End_Comment
+	End_Scenario 2
+End_Script
+
+Add a flag to the number buffer
+----------------------------------------
+	Comment
+		Suppose you want to add the value of the flag (0, 1) to the
+		current value of the number buffer. Unfortunately, while there is
+		a command to directly add a value to the number buffer, there is
+		not a command to add the value of a flag to the number buffer.
+
+		The following example will demonstrate how to accomplish this. Note
+		that it uses an additional flag (0, 0) to store the current value
+		of the number buffer. One can use a similar approach to subtract
+		a flag's value from the number buffer.
+	End_Comment
+	Retrieve_Flag 0 1
+	Add_Flags 0 1 0 0
+	Store_Flag 0 1
+
+Implementing for Loops
+----------------------------------------
+Begin_Script
+	Comment
+		In most programming languages, a for loop is an intrinsic language
+		construct that allows you to repeat an instruction a set number of
+		times. This scripting language does not directly include looping
+		constructs, but it is easy to simulate them using conditionals
+		and jumps.
+
+		While loops can be similarly implemented. (A for loop is a special
+		kind of while loop; all loops must have an initial value, a
+		condition, and a way to change the looping variable.)
+
+		The following example demonstrates how to implement a for loop
+		that will add the first five integers (1, 2, 3, 4, and 5) together.
+	End_Comment
+State 1
+	Comment
+		We will use the flag {{0}, {0}} to represent the looping variable.
+		The first thing one must do is provide an initial value for the
+		looping variable. Here, we provide the initial value 1.
+
+		The flag {{0}, {1}} is used here to store the result of the loop.
+		While you do not need to explicitly set it to zero in this short
+		example (as flags are by default set to zero), it is good practice
+		especially if you turn this into a procedure of some sort.
+	End_Comment
+	Set_Flag 0 1 0
+	Set_Flag 0 0 1
+State 2
+	Comment The next step is to test the loop's condition. We want to test
+	        that {{0}, {0}} <= 5; however, we must negate the loop condition
+			because we perform a jump only if the loop condition is false.
+			Therefore, if {{0}, {0}} > 5, then jump to state 3. Otherwise,
+			continue executing state 2. End_Comment
+	Store_Flag 0 0
+	Test_Buffer 5
+	Jump_If_Positive 3
+	Comment {{0}, {0}} <= 5, so execute the body of the loop, namely
+	        adding the flag {{0}, {0}} to the pre-existing sum stored in
+			the flag {{0}, {1}}. End_Comment
+	Add_Flags 0 1 0 0
+	Comment It is very important to remember to increment (or otherwise
+	        change) the looping variable's value at the end of the loop.
+			Otherwise, the loop will never end. End_Comment
+	Change_Flag 0 0 1
+	Comment The last step is to reevaluate the loop condition by jumping back
+			to it. End_Comment
+	Jump_To_State 2
+State 3
+	Comment Once the program reaches this state, it knows the loop is
+			done. End_Comment
+	End_Scenario 2
+End_Script
+
+Using parameters to control the behavior of called states
+----------------------------------------
+	Comment
+	End_Comment

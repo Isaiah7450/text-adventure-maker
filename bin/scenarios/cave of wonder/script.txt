@@ -1,0 +1,113 @@
+Begin_Script
+	State 0
+		Comment This is the starting state. End_Comment
+		Show_Text 1
+		Show_Text 2
+		Show_Text 3
+		Show_Text 4
+		Comment {{0}, {0}} will be used for general user input. End_Comment
+		Get_Input 0 0
+		Store_Flag 0 0
+		Jump_On_Buffer 1 2
+		Test_Buffer -1
+		Jump_If_Zero -1
+		Jump_To_State 0
+	State 1
+		Comment From state 0; player goes home before exploring the cave. End_Comment
+		Show_Text 11
+		End_Scenario 0
+	State 2
+		Comment From state 0; player explores the cave. End_Comment
+		Show_Text 21
+		Show_Text 22
+		Show_Text 23
+		Get_Input 0 0
+		Store_Flag 0 0
+		Test_Buffer 1
+		Jump_If_Zero 3
+		Rem It's good practice to do this for multiple jumps even if I could
+		    just do Test_Buffer 1 and Jump_If_Zero again. End_Rem
+		Store_Flag 0 0
+		Test_Buffer 2
+		Jump_If_Zero 5
+		Jump_To_State 2
+	State 3
+		Comment From state 2; player goes down narrow path. End_Comment
+		Rem {{3}, {0}} => Weariness Flag End_Rem
+		Change_Flag 3 0 1
+	State 4
+		Show_Text 41
+		Show_Text 42
+		Show_Text 43
+		Get_Input 0 0
+		Store_Flag 0 0
+		Add_To_Buffer 5
+		Jump_On_Buffer 6 7
+		Jump_To_State 4
+	State 5
+		Comment From state 2; player goes down wide path. End_Comment
+		Show_Text 51
+		Show_Text 52
+		Show_Text 53
+		Show_Text 54
+		Show_Text 55
+		Get_Input 0 0
+		Store_Flag 0 0
+		Add_To_Buffer 8
+		Jump_On_Buffer 9 10
+		Test_Buffer 10
+		Jump_If_Not_Zero 4
+		Show_Text 56
+		Change_Flag 3 0 1
+		Jump_To_State 4
+	State 6
+		Comment From state 3; player takes a break. End_Comment
+		Show_Text 61
+		Pause
+		Change_Flag 3 0 -1
+		Show_Text 62
+		Jump_To_State 8
+	State 7
+		Comment From state 3; player soldiers on. End_Comment
+		Show_Text 71
+		Jump_To_State 8
+	State 8
+		Comment From states 6, 7, 11, or 12. End_Comment
+		Show_Text 81
+		End_Scenario 1
+	State 9
+		Comment From state 5; player sneaks around spider. End_Comment
+		Show_Text 91
+		Pause
+		Show_Text 92
+		Jump_To_State 11
+	State 10
+		Comment From state 5; player kills spider. End_Comment
+		Show_Text 101
+		Pause
+		Show_Text 102
+		Change_Health -25
+		Show_Text 103
+		Change_Flag 3 0 1
+		Rem {{10}, {0}}: Player killed spider. End_Rem
+		Set_Flag 10 0 1
+		Jump_To_State 11
+	State 11
+		Comment From states 9 or 10. End_Comment
+		Show_Text 111
+		Store_Flag 10 0
+		Jump_If_Not_Zero 12
+		Jump_To_State 8
+	State 12
+		Comment From state 11; player killed spider earlier. End_Comment
+		Show_Text 121
+		Pause
+		Show_Text 122
+		Jump_To_State 8
+	State -1
+		Comment State that is useful for testing purposes. End_Comment
+		Show_Text -1
+		Get_Input 0 0
+		Store_Flag 0 0
+		Jump_On_Buffer 0 10
+End_Script

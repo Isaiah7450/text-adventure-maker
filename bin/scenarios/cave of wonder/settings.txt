@@ -1,0 +1,12 @@
+[global]
+version = 1
+
+[metadata]
+name = "Cave of Wonder"
+desc = "Explore the intrigue-filled Cave of Wonder."
+author = "Isaiah Hoffman"
+version = 1
+languages = <"english">
+
+[settings]
+start_state = 0

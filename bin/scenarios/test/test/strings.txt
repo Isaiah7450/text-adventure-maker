@@ -1,0 +1,34 @@
+0 Test scenario (āēīōū)
+1 I hope you had fun!
+2 Please type the number of the state you wish to go to.
+3 There is no state associated with your input. Jumping to state 100 instead!
+4 You are now at state 3.
+5 You are now at state 4.
+6 You are now at state 98.
+7 You are now at state 99.
+8 You are now at state 0.
+9 You are now at state 1.
+10 You are now at state 2.
+11 You are now at state 100.
+12 You are now at state 5.
+13 You are now at state 6.
+14 You are now at state 7.
+15 You are now at state 8.
+16 Welcome to this adventure.
+17 You are now at state 9.
+18 You are now at state 101.
+19 You are now at state 102.
+20 You are back at state 101.
+21 You are back at state 9.
+
+113 You have
+114 health left.
+200 This
+201 is
+202 a
+203 test!
+' This should be ignored.
+
+' This should also be ignored.
+210 Your lucky number is
+211 !
