@@ -162,11 +162,11 @@ namespace hoffman_isaiah {
 		}
 
 		void ScriptLexer::skipComments() {
-			auto command = this->getCommandToken();
 			bool in_comment = false;
 			int comment_start_line = 0;
 			// In case multiple comments appear right next to each other
-			while (command == ScriptCommands::Comment && this->getLookahead() != '\0') {
+			while (this->getCommandToken() == ScriptCommands::Comment
+				&& this->getLookahead() != '\0') {
 				in_comment = true;
 				comment_start_line = this->getLineNumber();
 				// Keep looping until we reach end of file
@@ -191,9 +191,8 @@ namespace hoffman_isaiah {
 						this->ctoken = ScriptCommands::Unknown;
 						this->skipWhite();
 					}
-					command = this->getCommandToken();
 					try {
-						if (command == ScriptCommands::End_Comment) {
+						if (this->getCommandToken() == ScriptCommands::End_Comment) {
 							// Break early if the comment was ended
 							in_comment = false;
 							// Get the next token and go ahead and scan it.
@@ -201,7 +200,7 @@ namespace hoffman_isaiah {
 							this->scan();
 							break;
 						}
-						else if (command == ScriptCommands::Comment) {
+						else if (this->getCommandToken() == ScriptCommands::Comment) {
 							// Finding the comment command inside a comment might
 							// be a sign that the user is trying to nest comments.
 							throw ScriptLexicalError {"Additional `Comment` command found within a comment.",

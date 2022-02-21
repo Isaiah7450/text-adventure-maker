@@ -4,6 +4,9 @@ Begin_Script
 			This text should be ignored by the parser.
 			The script also begins in this state.
 		End_Comment
+		Comment
+			Make sure the parser can handle two comments side-by-side.
+		End_Comment
 		Show_Text 8
 		Show_Text 16
 		Set_Flag 0 0 1
