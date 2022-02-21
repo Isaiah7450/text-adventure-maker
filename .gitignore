@@ -1,11 +1,9 @@
 # Directories
-bin/*
 */doc/**/
 */obj/**/
 .vs/**/
 Uploads/*.*
 Uploads/**/
-TowerDefense2D/**/Backup/
 install/**/
 
 # Directory Files
@@ -36,6 +34,7 @@ install/**/
 *.xlsx
 *.dat
 *.msi
+*.ilk
 
 !install/*.*
 !install/docs/
