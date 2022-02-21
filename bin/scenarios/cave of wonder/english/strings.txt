@@ -47,10 +47,10 @@
 ' State 10: From state 5; destroy the spider.
 101 You remove your hammer from your toolbelt. You begin to prepare to smash the spider.
 102 Unfortunately, the spider notices you. It sinks its venomous fangs into your skin before you are able to dispatch it.
-103 Though you will survive, the bite is very painful and leaves you feeling weary.
+103 Though you will survive, the bite is very painful and leaves you feeling exhausted.
 
 ' State 11: From state 9 or state 10.
-111 You continue walking deeper into the cave. The path begins to narrow and turns sharply.
+111 You continue walking deeper into the cave. The path narrows and begins to twist sharply.
 
 ' State 12: From state 11 if the player killed the spider earlier.
 121 Rather than subsiding, the pain in your arm is growing substantially. You can barely force yourself to continue walking. You decide to take a short break.
