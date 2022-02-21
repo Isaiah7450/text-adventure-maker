@@ -58,7 +58,7 @@ namespace hoffman::isaiah {
 
 		ScriptLexer::ScriptLexer(std::istream& script, std::string file) :
 			script_text {""},
-			lookahead {'\0'},
+			lookahead {},
 			token {""},
 			ttoken {ScriptTokenTypes::Unknown},
 			ctoken {ScriptCommands::Unknown},
