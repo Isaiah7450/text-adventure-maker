@@ -74,6 +74,14 @@ Begin_Script
 	State 8
 		Rem From states 6, 7, 11, or 12. End_Rem
 		Show_Text 81
+		Show_Text 82
+		Show_Text 83
+		Show_Text 84
+		Get_Input 0 0
+		Store_Flag 0 0
+		Add_To_Buffer 12
+		Jump_On_Buffer 13 15
+		Jump_To_State 8
 		End_Scenario 1
 	State 9
 		Rem From state 5; player sneaks around spider. End_Rem
@@ -104,6 +112,14 @@ Begin_Script
 		Pause
 		Show_Text 122
 		Jump_To_State 8
+	State 13
+	State 14
+		End_Scenario 1
+	State 15
+		Rem From state 8; player attempts to flee. End_Rem
+		Show_Text 151
+		Pause
+		Kill_Player
 	State -1
 		Rem State that is useful for testing purposes. End_Rem
 		Show_Text -1

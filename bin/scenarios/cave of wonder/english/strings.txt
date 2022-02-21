@@ -38,7 +38,10 @@
 71 Though your feet are aching, you decide to soldier on. After all, the pain will go away after a good rest once you have finished exploring the cave.
 
 ' State 8: From states 6, 7, 11, or 12.
-81 The path begins to widen and you find yourself in a large room.
+81 The path begins to widen and you find yourself in a large room. Another adventurer suddenly enters the room brandishing a knife. She lunges at you!
+82 1 => Attempt to dodge the attack.
+83 2 => Make a peace gesture.
+84 3 => Flee the way you came.
 
 ' State 9: From state 5; sneak around spider.
 91 You creep carefully past the spider.
@@ -55,3 +58,6 @@
 ' State 12: From state 11 if the player killed the spider earlier.
 121 Rather than subsiding, the pain in your arm is growing substantially. You can barely force yourself to continue walking. You decide to take a short break.
 122 Eventually, you begin walking again.
+
+' State 15: From state 8; player attempts to flee.
+151 You try to flee the way you came, but you quickly become lost. The adventurer quickly catches up with you, and you die a gruesome death.
