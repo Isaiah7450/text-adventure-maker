@@ -32,7 +32,7 @@ namespace hoffman_isaiah::errors {
 			data_line {dline} {
 		}
 		/// <returns>A full textual representation of the exception.</returns>
-		const char* what() const override {
+		const char* what() const noexcept override {
 			using namespace std::literals::string_literals;
 			std::string my_msg = "In file " + this->data_file + ":\n"
 				"\tError: " + this->getMessage() + " (Line " + std::to_string(this->data_line) + ")."
@@ -255,7 +255,10 @@ namespace hoffman_isaiah::util {
 				return my_str[0] == L'"' ? DatafileTokenTypes::String : DatafileTokenTypes::Identifier;
 			}
 			else {
+				// GCC doesn't seem to support constexpr if statements.
+				#ifndef __GNUC__
 				static_assert(false, "An invalid type was provided.");
+				#endif
 			}
 		}
 

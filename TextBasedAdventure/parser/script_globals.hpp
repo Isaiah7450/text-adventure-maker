@@ -50,7 +50,7 @@ namespace hoffman_isaiah {
 				my_severity {severity} {
 			}
 			/// <returns>The error message.</returns>
-			const char* what() const override {
+			const char* what() const noexcept override {
 				return this->my_message.c_str();
 			}
 			/// <returns>The severity level of the error.</returns>

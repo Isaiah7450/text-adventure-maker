@@ -221,7 +221,7 @@ namespace hoffman_isaiah::util {
 				__FILE__, __func__, __LINE__, this->getFileName(), this->getLineNumber()};
 		}
 		list_string += this->my_token;
-		while (this->getLookahead() != WEOF && this->getLookahead() != '>') {
+		while (this->getLookahead() != EOF && this->getLookahead() != '>') {
 			this->getNextToken();
 			this->expectTokenType(DatafileTokenTypes::Comma);
 			this->getNextToken();
@@ -231,7 +231,7 @@ namespace hoffman_isaiah::util {
 		this->getNextToken();
 		this->expectTokenType(DatafileTokenTypes::Right_Angle);
 		if (this->getLookahead() != ' ' && this->getLookahead() != '\t' && this->getLookahead() != '\r'
-			&& this->getLookahead() != '\n' && this->getLookahead() != WEOF) {
+			&& this->getLookahead() != '\n' && this->getLookahead() != EOF) {
 			throw errors::DatafileException {"Expected either end-of-file or whitespace.", __FILE__, __func__, __LINE__,
 				this->getFileName(), this->getLineNumber()};
 		}
@@ -287,7 +287,7 @@ namespace hoffman_isaiah::util {
 			this->my_token += this->getLookahead();
 			this->advance();
 		} while (this->getLookahead() != ' ' && this->getLookahead() != '\t' && this->getLookahead() != '\r'
-			&& this->getLookahead() != '\n' && this->getLookahead() != ',' && this->getLookahead() != WEOF
+			&& this->getLookahead() != '\n' && this->getLookahead() != ',' && this->getLookahead() != EOF
 			&& this->getLookahead() != '>');
 	}
 
@@ -307,7 +307,7 @@ namespace hoffman_isaiah::util {
 		this->my_token += this->getLookahead();
 		this->advance();
 		if (this->getLookahead() != ' ' && this->getLookahead() != '\t' && this->getLookahead() != '\r'
-			&& this->getLookahead() != '\n' && this->getLookahead() != WEOF) {
+			&& this->getLookahead() != '\n' && this->getLookahead() != EOF) {
 			throw errors::DatafileException {"Expected either end-of-file or whitespace.", __FILE__, __func__, __LINE__,
 				this->getFileName(), this->getLineNumber()};
 		}
@@ -315,7 +315,7 @@ namespace hoffman_isaiah::util {
 
 	void DataFileReader::readString() {
 		// Strings: "[^"]*"
-		// Note also that the escape sequences \t, \n, \", and \\
+		// Note also that the escape sequences \t, \n, \", and double backslash
 		// are recognized and will be replaced with a tab, a newline, a double
 		// quote, and a single backslash respectively.
 		this->my_token_type = DatafileTokenTypes::String;
@@ -353,7 +353,7 @@ namespace hoffman_isaiah::util {
 				++this->line_number;
 			}
 			this->advance();
-		} while ((this->getLookahead() != '"' || previous_was_slash) && this->getLookahead() != WEOF);
+		} while ((this->getLookahead() != '"' || previous_was_slash) && this->getLookahead() != EOF);
 		if (this->getLookahead() != '"') {
 			throw errors::DatafileException {"Expected `\"`.", __FILE__, __func__, __LINE__,
 				this->getFileName(), this->getLineNumber()};
@@ -361,7 +361,7 @@ namespace hoffman_isaiah::util {
 		this->my_token += this->getLookahead();
 		this->advance();
 		if (this->getLookahead() != ' ' && this->getLookahead() != '\t' && this->getLookahead() != '\r'
-			&& this->getLookahead() != '\n' && this->getLookahead() != ',' && this->getLookahead() != WEOF
+			&& this->getLookahead() != '\n' && this->getLookahead() != ',' && this->getLookahead() != EOF
 			&& this->getLookahead() != '>') {
 			throw errors::DatafileException {"Expected either end-of-file or whitespace.", __FILE__, __func__, __LINE__,
 				this->getFileName(), this->getLineNumber()};
@@ -396,7 +396,7 @@ namespace hoffman_isaiah::util {
 				__func__, __LINE__, this->getFileName(), this->getLineNumber()};
 		}
 		if (this->getLookahead() != ' ' && this->getLookahead() != '\t' && this->getLookahead() != '\r'
-			&& this->getLookahead() != '\n' && this->getLookahead() != ',' && this->getLookahead() != WEOF
+			&& this->getLookahead() != '\n' && this->getLookahead() != ',' && this->getLookahead() != EOF
 			&& this->getLookahead() != '>') {
 			throw errors::DatafileException {"Expected either end-of-file or whitespace.", __FILE__, __func__, __LINE__,
 				this->getFileName(), this->getLineNumber()};

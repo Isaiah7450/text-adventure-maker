@@ -2,6 +2,7 @@
 // File Created: December 30, 2017
 #include <fstream>
 #include <iostream>
+#include <memory>
 #include <stdexcept>
 #include <string>
 #include <conio.h>
