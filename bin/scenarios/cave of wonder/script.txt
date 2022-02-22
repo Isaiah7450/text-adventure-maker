@@ -10,7 +10,7 @@ Begin_Script
 		Store_Flag 0 0
 		Jump_On_Buffer 1 2
 		Test_Buffer -1
-		Jump_If_Zero -1
+		Jump_If_Zero 99999
 		Jump_To_State 0
 	State 1
 		Rem From state 0; player goes home before exploring the cave. End_Rem
@@ -64,8 +64,11 @@ Begin_Script
 		Rem From state 3; player takes a break. End_Rem
 		Show_Text 61
 		Pause
-		Change_Flag 3 0 -1
 		Show_Text 62
+		Store_Flag 3 0
+		Rem Decrease weariness if weariness is positive. End_Rem
+		Jump_If_Zero 8
+		Change_Flag 3 0 -1
 		Jump_To_State 8
 	State 7
 		Rem From state 3; player soldiers on. End_Rem
@@ -82,7 +85,6 @@ Begin_Script
 		Add_To_Buffer 12
 		Jump_On_Buffer 13 15
 		Jump_To_State 8
-		End_Scenario 1
 	State 9
 		Rem From state 5; player sneaks around spider. End_Rem
 		Show_Text 91
@@ -113,17 +115,79 @@ Begin_Script
 		Show_Text 122
 		Jump_To_State 8
 	State 13
+		Rem From state 8; player attempts to dodge. End_Rem
+		Show_Text 131
+		Jump_To_State 16
 	State 14
-		End_Scenario 1
+		Rem From state 8; player attempts to keep moving. End_Rem
+		Show_Text 141
+		Change_Health -15
+		Change_Flag 3 0 1
+		Show_Text 142
+		Jump_To_State 16
 	State 15
 		Rem From state 8; player attempts to flee. End_Rem
 		Show_Text 151
 		Pause
 		Kill_Player
-	State -1
-		Rem State that is useful for testing purposes. End_Rem
-		Show_Text -1
+	State 16
+		Rem From state 14 or 15. End_Rem
+		Show_Text 161
+		Show_Text 162
+		Show_Text 163
+		Show_Text 164
 		Get_Input 0 0
 		Store_Flag 0 0
-		Jump_On_Buffer 0 10
+		Add_To_Buffer 16
+		Jump_On_Buffer 17 19
+		Jump_To_State 16
+	State 17
+		Rem From state 16; player lit candle. End_Rem
+		Show_Text 171
+		Show_Text 172
+		Show_Text 173
+		Rem Flag {{17}, {0}}: Matches used. End_Rem
+		Change_Flag 17 0 1
+		Get_Input 0 0
+		Store_Flag 0 0
+		Test_Buffer 1
+		Jump_If_Zero 18
+		Jump_To_State 20
+	State 18
+		Rem From state 16; player lit lantern. End_Rem
+		Show_Text 181
+		Change_Flag 17 0 1
+		Jump_To_State 21
+	State 19
+		Rem From state 16; player returns home. End_Rem
+		Show_Text 191
+		Rem Weariness test; need <2 to make it out safely. End_Rem
+		Store_Flag 3 0
+		Test_Buffer 1
+		Jump_If_Positive 22
+		Jump_To_State 23
+	State 20
+		Rem From state 17; player continues in dark. End_Rem
+		Show_Text 201
+		Rem Flag {{20}, {0}}: No light source. End_Rem
+		Change_Flag 20 0 1
+		Jump_To_State 21
+	State 21
+		Rem From state 18 or 20. End_Rem
+		Show_Text 211
+		End_Scenario 1
+	State 22
+		Rem From state 19; failed weariness test. End_Rem
+		Show_Text 221
+		Kill_Player
+	State 23
+		Rem From state 19; passed weariness test. End_Rem
+		Show_Text 231
+		End_Scenario 0
+	State 99999
+		Rem State that is useful for testing purposes. End_Rem
+		Show_Text 99999
+		Get_Input 0 0
+		Store_Flag 0 0
+		Jump_On_Buffer 0 16
 End_Script

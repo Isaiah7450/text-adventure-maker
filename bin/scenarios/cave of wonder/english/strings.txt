@@ -1,7 +1,5 @@
 ' Scenario name.
 0 Cave of Wonder
-' State -1: Testing-related code.
--1 Jump to which state?
 ' State 0: Introductory text.
 1 Welcome to the Cave of Wonder. Treasure awaits the curious explorer, but beware of the traps and monsters that lurk inside.
 2 You are near the entrance to the cave. You could, if you wish, turn back and explore another day. That would be the wiser choice. But if you are brave and curious, you could go further into the cave.
@@ -38,9 +36,9 @@
 71 Though your feet are aching, you decide to soldier on. After all, the pain will go away after a good rest once you have finished exploring the cave.
 
 ' State 8: From states 6, 7, 11, or 12.
-81 The path begins to widen and you find yourself in a large room. Another adventurer suddenly enters the room brandishing a knife. She lunges at you!
-82 1 => Attempt to dodge the attack.
-83 2 => Make a peace gesture.
+81 The path begins to widen and you find yourself in a large room. A swarm of bats suddenly swoop down from the ceiling!
+82 1 => Attempt to dodge the bats.
+83 2 => Run forward as fast as you can.
 84 3 => Flee the way you came.
 
 ' State 9: From state 5; sneak around spider.
@@ -59,5 +57,44 @@
 121 Rather than subsiding, the pain in your arm is growing substantially. You can barely force yourself to continue walking. You decide to take a short break.
 122 Eventually, you begin walking again.
 
+' State 13: From state 8; player attempts to dodge.
+131 You duck down hoping the bats will stay above you. Your tactic succeeds. You continue deeper into the cave.
+
+' State 14: From state 8; player attempts to run forward.
+141 You run forward with all haste. Some of the bats chase you. They manage to catch up with you and attack you.
+142 Eventually, the bats leave you alone. You continue deeper into the cave.
+
 ' State 15: From state 8; player attempts to flee.
-151 You try to flee the way you came, but you quickly become lost. The adventurer quickly catches up with you, and you die a gruesome death.
+151 You try to flee the way you came, but you quickly become lost. The bats do not chase you, but you never find your way out of the cave. You die of dehydration after a few days.
+
+' State 16: From state 14 or state 15.
+161 The cave starts to get darker. After a while, you are unable to see anything closer than a few centimeters away from you.
+162 1 => Light a candle.
+163 2 => Light a lantern.
+164 3 => Call it a day and leave.
+
+' State 17: From state 16; player lit candle.
+171 You pull out a candle and a match. You light the match and use it to light the candle. The candle lets off a soft orange glow. A fierce wind blows, and the candle's flame withers and dies.
+172 1 => Use your last match to light a lantern.
+173 2 => Continue onward in the dark.
+
+' State 18: From state 16; player lit lantern.
+181 You pull out a match and use it to light your lantern. It lets off a fuzzy orange glow. You press onward through the cave.
+
+' State 19: From state 16; player goes home.
+191 You decide you have had enough adventuring for one day and attempt to leave the cave.
+
+' State 20: From state 17; player continues in dark.
+201 You decide to save your one remaining match and press onward. Your visibility does not improve.
+
+' State 21: From state 18 or 20.
+211 At last, you think you are approaching the end of the cave. The treasure hidden within should be near!
+
+' State 22: From state 19; weariness > 1.
+221 Alas, you are too weary to navigate the cave successfully. You eventually collapse from exhaustion and die.
+
+' State 23: From state 19; weariness <= 1.
+231 You manage to find your way to the exit.
+
+' State 99999: Testing-related code.
+99999 Jump to which state?
