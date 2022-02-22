@@ -170,8 +170,10 @@ to include commas in your code to separate numbers.
 
 Maximum Flag X-Index:  99,999
 Maximum Flag Y-Index:     999
-  Minimum Flag Value: -32,768 (Same for number buffer and player health.)
-  Maximum Flag Value:  32,767 (Same for number buffer and player health.)
+  Minimum Flag Value:  -32,768 (Same for number buffer and player health.)
+  Maximum Flag Value:   32,767 (Same for number buffer and player health.)
+  Minimum Input Value: -32,768
+  Maximum Input Value:  32,767
 Maximum State Number:  99,999
 
 ===settings.txt===
