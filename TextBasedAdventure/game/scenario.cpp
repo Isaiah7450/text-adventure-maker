@@ -299,7 +299,7 @@ namespace hoffman_isaiah {
 					}
 				}
 				catch (...) {
-					std::cout << "Try again: ";
+					std::cout << "Please provide a 16-bit integer. Try again: ";
 					std::cout.flush();
 				}
 			} while (!validInput);
