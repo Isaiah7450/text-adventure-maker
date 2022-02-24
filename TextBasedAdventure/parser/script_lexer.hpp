@@ -48,6 +48,7 @@ namespace hoffman_isaiah {
 					{ScriptCommands::Reset_Buffer, "Reset_Buffer"}, {ScriptCommands::Add_To_Buffer, "Add_To_Buffer"},
 					{ScriptCommands::Test_Buffer, "Subtract_From_Buffer"}, {ScriptCommands::Jump_To_State, "Jump_To_State"},
 					{ScriptCommands::End_Scenario, "End_Scenario"}, {ScriptCommands::Change_Health, "Change_Health"},
+					{ScriptCommands::Change_Health_Indirect, "Change_Health_Indirect"},
 					{ScriptCommands::Kill_Player, "Kill_Player"}, {ScriptCommands::Get_Input, "Get_Input"},
 					{ScriptCommands::Pause, "Pause"}, {ScriptCommands::Store_Health, "Store_Health"},
 					{ScriptCommands::Clear_String, "Clear_String"}, {ScriptCommands::Append_String, "Append_String"},

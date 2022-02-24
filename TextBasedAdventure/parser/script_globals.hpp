@@ -18,8 +18,8 @@ namespace hoffman_isaiah {
 			Set_Flag, Set_Flag_Indirect, Retrieve_Flag, Store_Flag,
 			Increment_Flag, Add_Flags, Subtract_Flags, Test_Flags,
 			Jump_If_Zero, Jump_If_Not_Zero, Jump_If_Positive, Jump_If_Negative, Jump_On_Buffer,
-			Reset_Buffer, Add_To_Buffer, Test_Buffer, Jump_To_State,
-			End_Scenario, Store_Health, Change_Health, Kill_Player, Get_Input, Pause,
+			Reset_Buffer, Add_To_Buffer, Test_Buffer, Jump_To_State, End_Scenario,
+			Store_Health, Change_Health, Change_Health_Indirect, Kill_Player, Get_Input, Pause,
 			Clear_String, Append_String, Append_String_Indirect, Append_Number, Display_String,
 			Append_Space, Call_State, Return
 		};

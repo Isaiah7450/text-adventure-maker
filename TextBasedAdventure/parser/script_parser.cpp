@@ -229,6 +229,14 @@ namespace hoffman_isaiah {
 						}
 						break;
 					}
+					case ScriptCommands::Change_Health_Indirect:
+					{
+						auto flag = this->parseFlag();
+						if (!this->scenario_data.changeHealthIndirect(flag.first, flag.second)) {
+							end_script = true;
+						}
+						break;
+					}
 					case ScriptCommands::Kill_Player:
 						this->scenario_data.killPlayer();
 						end_script = true;

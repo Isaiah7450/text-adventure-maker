@@ -40,6 +40,8 @@ Begin_Script
 		Jump_To_State 99
 	State 5
 		Show_Text 12
+		Set_Flag 14 24 -72
+		Change_Health_Indirect 14 24
 		Jump_To_State 3
 	State 6
 		Show_Text 13

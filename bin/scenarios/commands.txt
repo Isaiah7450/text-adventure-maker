@@ -120,24 +120,28 @@
 24. Change_Health {Amount} : Changes the health of the player.
  - {Amount} : The amount to change the player's health by.
 
-25. Kill_Player : Kills the player.
+25. Change_Health_Indirect {X} {Y} : Changes the health of the player by the amount in the provided flag.
+ - {X} : The first index of the flag to use.
+ - {Y} : The second index of the flag to use.
 
-26. Get_Input {X} {Y} : Stops the script and pauses for user input.
+26. Kill_Player : Kills the player.
+
+27. Get_Input {X} {Y} : Stops the script and pauses for user input.
  - {X} : The first index of the flag to set
  - {Y} : The second index of the flag to set
  - This command stops the script and prompts the user for a numerical input.
    The flag given by ({X}, {Y}) receives the value input by the user.
 
-27. Pause : Stops the script and pauses for user input.
+28. Pause : Stops the script and pauses for user input.
  - Unlike the previous command, whatever value that is given by the player
    is simply discarded. Use it after a long sequence of text.
 
-28. Clear_String : Clears the string buffer.
+29. Clear_String : Clears the string buffer.
 
-29. Append_String {#}: Appends the given string to the string buffer.
+30. Append_String {#}: Appends the given string to the string buffer.
  - {#} : The number of the string to append to the buffer.
 
-30. Append_String_In_Flag {X} {Y} : Appends the string referenced by the given
+31. Append_String_In_Flag {X} {Y} : Appends the string referenced by the given
                                     flag to the string buffer.
  - {X} : The first index of the flag that stores the referenced string.
  - {Y} : The second index of the flag that stores the referenced string.
@@ -145,22 +149,22 @@
        at {{X}, {Y}}. It then looks up the string in the scenario's string
        table that corresponds to the flag's value.
 
-31. Append_Number : Appends the value stored in the number buffer to the
+32. Append_Number : Appends the value stored in the number buffer to the
                     string buffer.
 
-32. Append_Space : Appends a space to the end of the string buffer.
+33. Append_Space : Appends a space to the end of the string buffer.
 
-33. Display_String : Outputs the contents of the string buffer to the screen.
+34. Display_String : Outputs the contents of the string buffer to the screen.
  - Like Show_Text, this command also adds a newline at the end.
  - The string buffer is not cleared after this command.
 
-34. Store_Health : Stores the player's health in the number buffer.
+35. Store_Health : Stores the player's health in the number buffer.
 
-35. Call_State {#} : Jumps to the given state and executes commands until
+36. Call_State {#} : Jumps to the given state and executes commands until
                      a Return_From_Call command is reached.
  - {#} : The state to call.
 
-36. Return_From_State : Returns back to the original call site after
+37. Return_From_State : Returns back to the original call site after
                         an original Call_State command.
 
 ===RESOURCE LIMITS===

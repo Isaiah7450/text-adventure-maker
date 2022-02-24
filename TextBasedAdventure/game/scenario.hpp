@@ -122,6 +122,10 @@ namespace hoffman_isaiah {
 			/// <param name="amt">The amount by which to change the player's health.</param>
 			/// <returns>True if the player is still alive else false.</returns>
 			bool changeHealth(std::int16_t amt) noexcept;
+			/// <summary>Changes the health of the player using the value of a flag.</summary>
+			/// <param name="x">The x-index of the flag to use.</param>
+			/// <param name="y">The y-index of the flag to use.</param>
+			bool changeHealthIndirect(int x, int y) noexcept;
 			/// <summary>Kills the player triggering a death ending.</summary>
 			void killPlayer() noexcept;
 			/// <summary>Obtains a number from the player and stores it in a flag.</summary>
@@ -186,7 +190,8 @@ namespace hoffman_isaiah {
 			/// <summary>The variable represents the amount of health the player has remaining.</summary>
 			std::int16_t player_health;
 			/// <summary>This variable is a two-dimensional array of flags that the scenario uses.</summary>
-			std::unique_ptr<std::array<std::array<std::int16_t, Scenario::max_y_flag>, Scenario::max_x_flag>> scen_flags;
+			std::unique_ptr<std::array<std::array<std::int16_t, Scenario::max_y_flag>,
+				Scenario::max_x_flag>> scen_flags;
 			/// <summary>This variable maps the scenario's string numbers to the proper string used by the scenario.</summary>
 			std::map<int, std::string> string_table;
 			/// <summary>This variable represents the number buffer utilized by the scenario.</summary>

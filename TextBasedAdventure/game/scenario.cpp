@@ -273,6 +273,13 @@ namespace hoffman_isaiah {
 			return false;
 		}
 
+		bool Scenario::changeHealthIndirect(int x, int y) noexcept {
+			// Warning: unsafe without script validation!
+			assert(x >= 0 && x < Scenario::max_x_flag);
+			assert(y >= 0 && y < Scenario::max_y_flag);
+			return this->changeHealth((*this->scen_flags)[x][y]);
+		}
+
 		void Scenario::killPlayer() noexcept {
 			this->doDeathSequence();
 			this->player_health = 0;
