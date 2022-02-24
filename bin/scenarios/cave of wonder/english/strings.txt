@@ -89,12 +89,35 @@
 
 ' State 21: From state 18 or 20.
 211 At last, you think you are approaching the end of the cave. The treasure hidden within should be near!
+212 You see an inscription on the nearby wall. You attempt to read it using the light of your lantern. It reads, "Here lies the treasure of wonder. Beware the evil that rests within."
 
 ' State 22: From state 19; weariness > 1.
 221 Alas, you are too weary to navigate the cave successfully. You eventually collapse from exhaustion and die.
 
 ' State 23: From state 19; weariness <= 1.
 231 You manage to find your way to the exit.
+
+' State 24: From state 21; in darkness.
+241 You see an inscription on the nearby wall. You attempt to read it, but it is too dark to see.
+
+' State 25: From state 21 or state 24.
+251 You see the treasure ahead of you. It is very tempting to rush out and grab it, but who knows what may happen afterwards?
+252 1 => Attempt to burn it.
+253 2 => Steal it.
+254 3 => Leave it alone.
+
+' State 27; From state 25; attempt to steal.
+271 You rush forward to grab the treasure, but as you do so, the ground opens up beneathe you. You fall a great depth, and your vision fades.
+272 Several hours pass. You manage to regain consciousness. You eventually find your way out of the cave, but you are never the same after the experience. The episode constantly replays itself in your dreams.
+
+' State 28; from state 25; attempt to leave.
+281 You decide that the treasure is not worth bothering with and leave. You manage to make it out alive and live an uneventful life.
+
+' State 29: From state 26 but no matches.
+291 Alas, you have used up all your matches. You are unable to burn it.
+
+' State 30: From state 26 with matches.
+301 Wary of the treasure, you take out a match. You light it and throw it at the treasure. It is engulfed by fiery red flames and disintegrates. Having explored the cave fully, you return the way you came. You manage to make it out alive. Everyone asks you about your journey which you recount to them in glorious detail.
 
 ' State 99999: Testing-related code.
 99999 Jump to which state?

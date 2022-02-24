@@ -175,7 +175,11 @@ Begin_Script
 	State 21
 		Rem From state 18 or 20. End_Rem
 		Show_Text 211
-		End_Scenario 1
+		Store_Flag 20 0
+		Test_Buffer 1
+		Jump_If_Zero 24
+		Show_Text 212
+		Jump_To_State 25
 	State 22
 		Rem From state 19; failed weariness test. End_Rem
 		Show_Text 221
@@ -184,6 +188,46 @@ Begin_Script
 		Rem From state 19; passed weariness test. End_Rem
 		Show_Text 231
 		End_Scenario 0
+	State 24
+		Rem From state 21 in darkness. End_Rem
+		Show_Text 241
+		Jump_To_State 25
+	State 25
+		Rem From state 21 or 24. End_Rem
+		Show_Text 251
+		Show_Text 252
+		Show_Text 253
+		Show_Text 254
+		Get_Input 0 0
+		Store_Flag 0 0
+		Add_To_Buffer 25
+		Jump_On_Buffer 26 28
+		Jump_To_State 25
+	State 26
+		Rem From state 25; attempt to burn it. End_Rem
+		Store_Flag 17 0
+		Rem Player started with two matches. End_Rem
+		Test_Buffer 2
+		Jump_If_Zero 29
+		Jump_To_State 30
+	State 27
+		Rem From state 25; attempt to steal treasure. End_Rem
+		Show_Text 271
+		Change_Health -80
+		Show_Text 272
+		End_Scenario 2
+	State 28
+		Show_Text 281
+		End_Scenario 1
+	State 29
+		Rem From state 26; attempt to burn but no matches. End_Rem
+		Show_Text 291
+		Jump_To_State 25
+	State 30
+		Rem From state 26; attempt to burn with matches. End_Rem
+		Change_Flag 17 0 1
+		Show_Text 301
+		End_Scenario 1
 	State 99999
 		Rem State that is useful for testing purposes. End_Rem
 		Show_Text 99999
